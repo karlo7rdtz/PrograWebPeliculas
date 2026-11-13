@@ -1,0 +1,194 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background-color: #241135;
+    font-family: Georgia, serif;
+}
+
+.perfil {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #241135;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 5%;
+    gap: 20px;
+}
+
+.usuario {
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.foto-perfil {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.usuario a {
+    color: #d8d3c7;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 23px;
+    margin-top: 35px;
+}
+
+.usuario a:hover {
+    text-decoration: underline;
+}
+
+.informacion {
+    width: 27%;
+    padding-left: 10px;
+}
+
+.informacion h1 {
+    color: #d8d3c7;
+    font-family: Arial, sans-serif;
+    font-size: 42px;
+    margin-bottom: 45px;
+}
+
+.datos {
+    color: #d8d3c7;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.datos p {
+    margin-bottom: 5px;
+}
+
+.datos span {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.opciones {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.opcion {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+}
+
+.imagen-opcion {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: white;
+}
+
+.boleto {
+    width: 210px;
+    height: 100px;
+    background-color: #e8d6ba;
+    color: #a32419;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+.boleto:hover {
+    background-color: #f5e5cc;
+    transform: scale(1.05);
+}
+
+.decoracion {
+    display: none;
+}
+
+@media (max-width: 900px) {
+
+    .perfil {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 35px;
+        padding: 40px 20px;
+    }
+
+    .usuario {
+        width: 100%;
+    }
+
+    .foto-perfil {
+        width: 150px;
+        height: 150px;
+    }
+
+    .usuario a {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    .informacion {
+        width: 100%;
+        padding: 0;
+        text-align: center;
+    }
+
+    .informacion h1 {
+        font-size: 34px;
+        margin-bottom: 25px;
+    }
+
+    .datos {
+        font-size: 19px;
+    }
+
+    .opciones {
+        width: 100%;
+        gap: 20px;
+    }
+
+    .opcion {
+        gap: 20px;
+    }
+
+    .imagen-opcion {
+        width: 110px;
+        height: 110px;
+    }
+
+    .boleto {
+        width: 150px;
+        height: 75px;
+        font-size: 18px;
+    }
+}
