@@ -355,35 +355,121 @@ const series = [
     ["Crimen", "Drama", "Thriller"],
     "Patrick Jane utiliza su capacidad de observación para colaborar en investigaciones criminales. Mientras resuelve casos, persigue al responsable de una tragedia personal.",
   ],
+
+  [
+    "avatar-pelicula",
+    "Avatar: El último maestro aire",
+    2026,
+    ["Animación", "Fantasía", "Aventura"],
+    "Una aventura de Aang en el mundo de los cuatro elementos.",
+  ],
+
 ];
-
-
 // Excepciones: nombres de imágenes diferentes al identificador.
 // Los títulos que no aparecen aquí usan automáticamente:
 // posters/identificador.jpg y fondos/identificador.jpg
 
 const archivosImagenes = {
+  // PELÍCULAS
+
+  "avatar-pelicula": {
+    poster: "EMA.jpg",
+    fondo: "avatar-aang.jpg",
+  },
+
+  "scream": {
+    poster: "scream.jpg",
+    fondo: "scream.jpg",
+  },
+
   "whiplash": {
     poster: "wiplash.jpg",
     fondo: "wiplash.jpg",
   },
 
-  "the-midnight-gospel": {
-    poster: "MG.jpg",
-    fondo: "MG.jpg",
+  "past-lives": {
+    poster: "past-lives.jpg",
+    fondo: "past-lives.jpg",
+  },
+
+  "paprika": {
+    poster: "paprika.jpg",
+    fondo: "paprika.jpg",
   },
 
   "fallen-angels": {
+    poster: "fallen-angels.jpg",
     fondo: "FALLEN-ANGELS.jpg",
   },
 
+  "nosferatu": {
+    poster: "nosferatu.jpg",
+    fondo: "nosferatu.jpg",
+  },
+
   "fantastico-senor-zorro": {
+    poster: "fantastico-senor-zorro.jpg",
     fondo: "EL-FANTASTICO-SEÑOR-ZORRO.jpg",
+  },
+
+  "donnie-darko": {
+    poster: "donnie-darko.jpg",
+    fondo: "donnie-darko.jpg",
+  },
+
+  "shrek2": {
+    poster: "shrek2.jpg",
+    fondo: "shrek2.jpg",
+  },
+
+  "macario": {
+    poster: "macario.jpg",
+    fondo: "macario.jpg",
+  },
+
+  "scott-pilgrim": {
+    poster: "scott-pilgrim.jpg",
+    fondo: "scott-pilgrim.jpg",
+  },
+
+  "supercool": {
+    poster: "supercool.jpg",
+    fondo: "supercool.jpg",
+  },
+
+  "perfect-blue": {
+    poster: "perfect-blue.jpg",
+    fondo: "perfect-blue.jpg",
+  },
+
+  "isla-de-perros": {
+    poster: "isla-de-perros.jpg",
+    fondo: "isla-de-perros.jpg",
+  },
+
+  "the-return-of-the-living-dead": {
+    poster: "TROTLD.jpg",
+    fondo: "TROTLD.jpg",
+  },
+
+  "el-resplandor": {
+    poster: "el-resplandor.jpg",
+    fondo: "el-resplandor.jpg",
+  },
+
+  "twilight": {
+    poster: "twilight.jpg",
+    fondo: "twilight.jpg",
   },
 
   "dead-poets-society": {
     poster: "DPS.jpg",
     fondo: "dps.jpg",
+  },
+
+  "mean-girls": {
+    poster: "mean-girls.jpg",
+    fondo: "mean-girls.jpg",
   },
 
   "sonrie": {
@@ -392,11 +478,23 @@ const archivosImagenes = {
   },
 
   "hereditary": {
+    poster: "hereditary.jpg",
     fondo: "HEREDITARY.jpg",
   },
 
   "carrie": {
     poster: "CARRIE.jpg",
+    fondo: "carrie.jpg",
+  },
+
+  "senales": {
+    poster: "senales.jpg",
+    fondo: "senales.jpg",
+  },
+
+  "akira": {
+    poster: "akira.jpg",
+    fondo: "akira.jpg",
   },
 
   "destino-final": {
@@ -404,8 +502,24 @@ const archivosImagenes = {
     fondo: "DF.jpg",
   },
 
+  "the-craft": {
+    poster: "the craft.jpg",
+    fondo: "the-craft.jpg",
+  },
+
+  "megamente": {
+    poster: "megamente.jpg",
+    fondo: "megamente.jpg",
+  },
+
   "midsommar": {
+    poster: "midsommar.jpg",
     fondo: "MIDDSOMMAR.jpg",
+  },
+
+  "perdida": {
+    poster: "perdida.jpg",
+    fondo: "perdida.jpg",
   },
 
   "pacific-rim": {
@@ -413,10 +527,7 @@ const archivosImagenes = {
     fondo: "PR.jpg",
   },
 
-  "the-return-of-the-living-dead": {
-    poster: "TROTLD.jpg",
-    fondo: "TROTLD.jpg",
-  },
+  // SERIES
 
   "avatar": {
     poster: "ATLA.jpg",
@@ -425,6 +536,12 @@ const archivosImagenes = {
 
   "invincible": {
     poster: "INVINCIBLE.jpg",
+    fondo: "invincible.jpg",
+  },
+
+  "malcolm": {
+    poster: "malcolm.jpg",
+    fondo: "malcolm.jpg",
   },
 
   "mob-psycho": {
@@ -433,7 +550,13 @@ const archivosImagenes = {
   },
 
   "evangelion": {
+    poster: "evangelion.jpg",
     fondo: "EVANGELION.jpg",
+  },
+
+  "south-park": {
+    poster: "SP.jpg",
+    fondo: "sp.jpg",
   },
 
   "rick-y-morty": {
@@ -441,9 +564,34 @@ const archivosImagenes = {
     fondo: "rick-and-morty.jpg",
   },
 
+  "un-show-mas": {
+    poster: "un-show-mas.jpg",
+    fondo: "un-show-mas.jpg",
+  },
+
+  "monster": {
+    poster: "monster.jpg",
+    fondo: "monster.jpg",
+  },
+
+  "hora-de-aventura": {
+    poster: "hora-de-aventura.jpg",
+    fondo: "hora-de-aventura.jpg",
+  },
+
   "better-call-saul": {
     poster: "BCS.jpg",
     fondo: "BCS.jpg",
+  },
+
+  "breaking-bad": {
+    poster: "breaking-bad.jpg",
+    fondo: "breaking-bad.jpg",
+  },
+
+  "the-office": {
+    poster: "the-office.jpg",
+    fondo: "the-office.jpg",
   },
 
   "mas-alla-del-jardin": {
@@ -453,6 +601,12 @@ const archivosImagenes = {
 
   "arcane": {
     poster: "ARCANE.jpg",
+    fondo: "arcane.jpg",
+  },
+
+  "death-note": {
+    poster: "dn.jpg",
+    fondo: "dn.jpg",
   },
 
   "hunter-x-hunter": {
@@ -460,8 +614,19 @@ const archivosImagenes = {
     fondo: "hxh.jpg",
   },
 
+  "shingeki": {
+    poster: "SNK.jpg",
+    fondo: "snk.jpg",
+  },
+
   "the-boys": {
     poster: "THE-BOYS.jpg",
+    fondo: "the-boys.jpg",
+  },
+
+  "el-mentalista": {
+    poster: "el-mentalista.jpg",
+    fondo: "el-mentalista.jpg",
   },
 
   "korra": {
@@ -470,7 +635,13 @@ const archivosImagenes = {
   },
 
   "final-space": {
+    poster: "final-space.jpg",
     fondo: "FINAL-SPACE.jpg",
+  },
+
+  "the-midnight-gospel": {
+    poster: "MG.jpg",
+    fondo: "MG.jpg",
   },
 
   "bojack-horseman": {
@@ -486,7 +657,10 @@ function rutaImagen(carpeta, archivo) {
 function crearContenido(fila, tipo) {
   const [id, titulo, anio, generos, sinopsis] = fila;
 
-  const archivos = archivosImagenes[id] ?? {};
+  const archivos = archivosImagenes[id] ?? {
+    poster: `${id}.jpg`,
+    fondo: `${id}.jpg`,
+  };
 
   return {
     id,
@@ -499,15 +673,8 @@ function crearContenido(fila, tipo) {
     calificacionGeneral: null,
     fuenteCalificacion: "",
 
-    poster: rutaImagen(
-      "posters",
-      archivos.poster ?? `${id}.jpg`
-    ),
-
-    fondo: rutaImagen(
-      "fondos",
-      archivos.fondo ?? `${id}.jpg`
-    ),
+    poster: rutaImagen("posters", archivos.poster),
+    fondo: rutaImagen("fondos", archivos.fondo),
   };
 }
 
