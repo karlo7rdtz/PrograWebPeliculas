@@ -1,0 +1,281 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background-color: #1a1028;
+    color: #e8d6ba;
+    font-family: Georgia, serif;
+}
+
+.perfil {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #1a1028;
+}
+
+.encabezado {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 6%;
+    background-color: #241135;
+}
+
+.volver {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 25px;
+    background-color: transparent;
+    border: 2px solid #e8d6ba;
+    border-radius: 25px;
+    color: #e8d6ba;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.volver:hover {
+    background-color: #e8d6ba;
+    color: #241135;
+}
+
+.icono-cine {
+    font-size: 30px;
+}
+
+.presentacion {
+    width: 100%;
+    min-height: 330px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+    padding: 45px 8%;
+    background: linear-gradient(
+        120deg,
+        #4a3558,
+        #241135,
+        #100b1b
+    );
+}
+
+.foto-perfil {
+    width: 220px;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 3px solid #e8d6ba;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.informacion-usuario {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.subtitulo {
+    color: #d8c9b3;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+}
+
+.informacion-usuario h1 {
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 55px;
+}
+
+.editar {
+    padding: 12px 30px;
+    border: 2px solid #c2a7cd;
+    border-radius: 25px;
+    color: #e8d6ba;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.editar:hover {
+    background-color: #e8d6ba;
+    color: #241135;
+}
+
+.preferencias {
+    width: 100%;
+    padding: 45px 8% 30px;
+}
+
+.preferencias h2,
+.opciones h2 {
+    color: #e8d6ba;
+    font-size: 25px;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.contenedor-preferencias {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.tarjeta-preferencia {
+    width: 45%;
+    min-height: 155px;
+    background-color: #34223e;
+    border-radius: 12px;
+    padding: 25px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+.simbolo {
+    font-size: 25px;
+}
+
+.tarjeta-preferencia p {
+    color: #d8c9b3;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.tarjeta-preferencia h3 {
+    color: #ffffff;
+    font-size: 23px;
+}
+
+.opciones {
+    width: 100%;
+    padding: 30px 8% 60px;
+}
+
+.contenedor-opciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
+    border-top: 1px solid #6b5576;
+    padding-top: 35px;
+}
+
+.opcion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: #e8d6ba;
+    transition: 0.3s;
+}
+
+.opcion:hover {
+    transform: scale(1.08);
+}
+
+.imagen-opcion {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: white;
+    border: 3px solid #e8d6ba;
+}
+
+.opcion span {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 750px) {
+
+    .encabezado {
+        padding: 20px;
+    }
+
+    .volver {
+        font-size: 13px;
+        padding: 10px 15px;
+    }
+
+    .presentacion {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+        padding: 35px 20px;
+    }
+
+    .foto-perfil {
+        width: 170px;
+        height: 210px;
+    }
+
+    .informacion-usuario {
+        align-items: center;
+    }
+
+    .informacion-usuario h1 {
+        font-size: 38px;
+    }
+
+    .subtitulo {
+        font-size: 12px;
+    }
+
+    .preferencias,
+    .opciones {
+        padding: 30px 20px;
+    }
+
+    .preferencias h2,
+    .opciones h2 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .contenedor-preferencias {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .tarjeta-preferencia {
+        width: 100%;
+    }
+
+    .contenedor-opciones {
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .imagen-opcion {
+        width: 110px;
+        height: 110px;
+    }
+
+    .opcion span {
+        font-size: 14px;
+    }
+}
