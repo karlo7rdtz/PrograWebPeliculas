@@ -1,0 +1,86 @@
+export const catalogo = [
+  {
+    id: "ben10",
+    titulo: "Ben 10",
+    tipo: "Serie",
+    anio: 2005,
+    informacion: "4 temporadas",
+    generos: ["Animación", "Acción", "Ciencia ficción"],
+    poster: "/imagenes/posters/ben10.jpg",
+    fondo: "",
+    sinopsis:
+      "Durante sus vacaciones, Ben encuentra un dispositivo llamado Omnitrix que le permite transformarse en distintos alienígenas. Con ayuda de Gwen y su abuelo Max, aprende a usar sus poderes.",
+  },
+  {
+    id: "scream",
+    titulo: "Scream",
+    tipo: "Película",
+    anio: 1996,
+    informacion: "111 minutos",
+    generos: ["Terror", "Thriller"],
+    poster: "/imagenes/posters/scream.jpg",
+    fondo: "",
+    sinopsis:
+      "Un asesino enmascarado comienza a perseguir a los habitantes de Woodsboro. Sidney Prescott y sus amigos deberán descubrir quién se esconde detrás de la máscara.",
+  },
+  {
+    id: "supercool",
+    titulo: "Supercool",
+    tipo: "Película",
+    anio: 2007,
+    informacion: "113 minutos",
+    generos: ["Comedia"],
+    poster: "/imagenes/posters/supercool.jpg",
+    fondo: "",
+    sinopsis:
+      "Dos amigos están por terminar la preparatoria y quieren disfrutar de una fiesta inolvidable. Su plan se convierte en una noche llena de situaciones inesperadas.",
+  },
+  {
+    id: "shrek2",
+    titulo: "Shrek 2",
+    tipo: "Película",
+    anio: 2004,
+    informacion: "93 minutos",
+    generos: ["Comedia", "Animación", "Fantasía", "Aventura"],
+    poster: "/imagenes/posters/shrek2.jpg",
+    fondo: "/imagenes/fondos/shrek2.jpg",
+    sinopsis:
+      "Shrek, Fiona y Burro viajan a Muy Muy Lejano para conocer a los padres de Fiona. La visita resulta complicada cuando el rey descubre quién es su yerno, mientras el Hada Madrina y el Príncipe Encantador preparan sus propios planes.",
+  },
+  {
+    id: "crepusculo",
+    titulo: "Crepúsculo",
+    tipo: "Película",
+    anio: 2008,
+    informacion: "122 minutos",
+    generos: ["Romance", "Fantasía"],
+    poster: "/imagenes/posters/crepusculo.jpg",
+    fondo: "",
+    sinopsis:
+      "Bella Swan se muda a Forks y conoce a Edward Cullen, un joven que esconde un secreto. Su relación la acerca a un mundo que nunca imaginó.",
+  },
+  {
+    id: "korra",
+    titulo: "La leyenda de Korra",
+    tipo: "Serie",
+    anio: 2012,
+    informacion: "4 temporadas",
+    generos: ["Animación", "Aventura", "Fantasía"],
+    poster: "/imagenes/posters/korra.jpg",
+    fondo: "",
+    sinopsis:
+      "Korra, la nueva Avatar, llega a Ciudad República para dominar el aire. Allí enfrenta conflictos que ponen a prueba el equilibrio entre las personas y el mundo espiritual.",
+  },
+  {
+    id: "invincible",
+    titulo: "Invincible",
+    tipo: "Serie",
+    anio: 2021,
+    informacion: "Serie de superhéroes",
+    generos: ["Animación", "Acción", "Ciencia ficción"],
+    poster: "/imagenes/posters/invincible.jpg",
+    fondo: "",
+    sinopsis:
+      "Mark Grayson comienza a desarrollar superpoderes y quiere seguir los pasos de su padre. Pronto descubre que convertirse en héroe implica decisiones difíciles.",
+  },
+];
