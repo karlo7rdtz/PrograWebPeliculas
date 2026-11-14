@@ -358,8 +358,135 @@ const series = [
 ];
 
 
+// Excepciones: nombres de imágenes diferentes al identificador.
+// Los títulos que no aparecen aquí usan automáticamente:
+// posters/identificador.jpg y fondos/identificador.jpg
+
+const archivosImagenes = {
+  "whiplash": {
+    poster: "wiplash.jpg",
+    fondo: "wiplash.jpg",
+  },
+
+  "the-midnight-gospel": {
+    poster: "MG.jpg",
+    fondo: "MG.jpg",
+  },
+
+  "fallen-angels": {
+    fondo: "FALLEN-ANGELS.jpg",
+  },
+
+  "fantastico-senor-zorro": {
+    fondo: "EL-FANTASTICO-SEÑOR-ZORRO.jpg",
+  },
+
+  "dead-poets-society": {
+    poster: "DPS.jpg",
+    fondo: "dps.jpg",
+  },
+
+  "sonrie": {
+    poster: "smile.jpg",
+    fondo: "smiles.jpg",
+  },
+
+  "hereditary": {
+    fondo: "HEREDITARY.jpg",
+  },
+
+  "carrie": {
+    poster: "CARRIE.jpg",
+  },
+
+  "destino-final": {
+    poster: "DF.jpg",
+    fondo: "DF.jpg",
+  },
+
+  "midsommar": {
+    fondo: "MIDDSOMMAR.jpg",
+  },
+
+  "pacific-rim": {
+    poster: "PR.jpg",
+    fondo: "PR.jpg",
+  },
+
+  "the-return-of-the-living-dead": {
+    poster: "TROTLD.jpg",
+    fondo: "TROTLD.jpg",
+  },
+
+  "avatar": {
+    poster: "ATLA.jpg",
+    fondo: "ATLA.jpg",
+  },
+
+  "invincible": {
+    poster: "INVINCIBLE.jpg",
+  },
+
+  "mob-psycho": {
+    poster: "mob.jpg",
+    fondo: "mob.jpg",
+  },
+
+  "evangelion": {
+    fondo: "EVANGELION.jpg",
+  },
+
+  "rick-y-morty": {
+    poster: "rick-and-morty.jpg",
+    fondo: "rick-and-morty.jpg",
+  },
+
+  "better-call-saul": {
+    poster: "BCS.jpg",
+    fondo: "BCS.jpg",
+  },
+
+  "mas-alla-del-jardin": {
+    poster: "MADJ.jpg",
+    fondo: "MADJ.jpg",
+  },
+
+  "arcane": {
+    poster: "ARCANE.jpg",
+  },
+
+  "hunter-x-hunter": {
+    poster: "hxh.jpg",
+    fondo: "hxh.jpg",
+  },
+
+  "the-boys": {
+    poster: "THE-BOYS.jpg",
+  },
+
+  "korra": {
+    poster: "TLOK.jpg",
+    fondo: "tlok.jpg",
+  },
+
+  "final-space": {
+    fondo: "FINAL-SPACE.jpg",
+  },
+
+  "bojack-horseman": {
+    poster: "bojack-horsemna.jpg",
+    fondo: "bojack-horsemna.jpg",
+  },
+};
+
+function rutaImagen(carpeta, archivo) {
+  return `/imagenes/${carpeta}/${encodeURIComponent(archivo)}`;
+}
+
 function crearContenido(fila, tipo) {
   const [id, titulo, anio, generos, sinopsis] = fila;
+
+  const archivos = archivosImagenes[id] ?? {};
 
   return {
     id,
@@ -368,10 +495,19 @@ function crearContenido(fila, tipo) {
     tipo,
     generos,
     sinopsis,
+
     calificacionGeneral: null,
     fuenteCalificacion: "",
-    poster: `/imagenes/posters/${id}.jpg`,
-    fondo: `/imagenes/fondos/${id}.jpg`,
+
+    poster: rutaImagen(
+      "posters",
+      archivos.poster ?? `${id}.jpg`
+    ),
+
+    fondo: rutaImagen(
+      "fondos",
+      archivos.fondo ?? `${id}.jpg`
+    ),
   };
 }
 
