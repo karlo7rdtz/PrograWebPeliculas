@@ -77,3 +77,11 @@
   font-style: normal;
   font-display: swap;
 }
+
+:root {
+  /* Sistema tipográfico global */
+
+  --font-titulo: "Longreach", sans-serif;
+  --font-subtitulo: "Lokeya", sans-serif;
+  --font-texto: "Typographica", Arial, sans-serif;
+}

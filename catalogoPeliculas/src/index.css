@@ -12,18 +12,23 @@ html {
 
 body {
   margin: 0;
-  font-family: "Typographica", Arial, sans-serif;
+  font-family: var(--font-texto);
+}
+
+h1 {
+  font-family: var(--font-titulo);
+}
+
+h2,
+h3 {
+  font-family: var(--font-subtitulo);
 }
 
 button,
 input,
 select,
 textarea {
-  font: inherit;
-}
-
-button {
-  -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-texto);
 }
 
 #root {
