@@ -1,3 +1,5 @@
+@import "./styles/tipografia.css";
+
 * {
   box-sizing: border-box;
 }
@@ -10,7 +12,7 @@ html {
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Typographica", Arial, sans-serif;
 }
 
 button,
