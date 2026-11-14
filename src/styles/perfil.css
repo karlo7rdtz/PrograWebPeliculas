@@ -99,17 +99,20 @@ body {
     color: #ffffff;
     font-family: Arial, sans-serif;
     font-size: 55px;
+    overflow-wrap: anywhere;
 }
 
 .editar {
     padding: 12px 30px;
     border: 2px solid #c2a7cd;
     border-radius: 25px;
+    background-color: transparent;
     color: #e8d6ba;
     font-family: Arial, sans-serif;
     font-size: 15px;
     font-weight: bold;
     text-decoration: none;
+    cursor: pointer;
     transition: 0.3s;
 }
 
@@ -163,6 +166,7 @@ body {
 .tarjeta-preferencia h3 {
     color: #ffffff;
     font-size: 23px;
+    overflow-wrap: anywhere;
 }
 
 .opciones {
@@ -207,6 +211,131 @@ body {
     font-size: 18px;
     font-weight: bold;
     letter-spacing: 1px;
+}
+
+.fondo-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+}
+
+.modal-editar {
+    width: 100%;
+    max-width: 540px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 35px;
+    background-color: #30203e;
+    border: 2px solid #a78bb7;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-editar h2 {
+    color: #e8d6ba;
+    font-family: Arial, sans-serif;
+    font-size: 29px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.vista-previa {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.vista-previa img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #e8d6ba;
+}
+
+.campo-formulario {
+    margin-bottom: 20px;
+}
+
+.campo-formulario label {
+    display: block;
+    margin-bottom: 9px;
+    color: #e8d6ba;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.campo-formulario input {
+    width: 100%;
+    padding: 13px 15px;
+    background-color: #21142e;
+    color: #ffffff;
+    border: 1px solid #9275a4;
+    border-radius: 9px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    outline: none;
+}
+
+.campo-formulario input:focus {
+    border-color: #e8d6ba;
+}
+
+.campo-formulario input[type="file"] {
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.botones-formulario {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.boton-guardar,
+.boton-cancelar {
+    padding: 12px 22px;
+    border-radius: 25px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.boton-guardar {
+    background-color: #b18bbd;
+    color: #241135;
+    border: 2px solid #b18bbd;
+}
+
+.boton-guardar:hover {
+    background-color: #e8d6ba;
+}
+
+.boton-cancelar {
+    background: transparent;
+    color: #e8d6ba;
+    border: 2px solid #b18bbd;
+}
+
+.boton-cancelar:hover {
+    background-color: #493050;
+}
+
+.mensaje-error {
+    color: #ffb5b5;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
 }
 
 @media (max-width: 750px) {
@@ -277,5 +406,9 @@ body {
 
     .opcion span {
         font-size: 14px;
+    }
+
+    .modal-editar {
+        padding: 25px 20px;
     }
 }
