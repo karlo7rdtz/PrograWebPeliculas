@@ -58,7 +58,7 @@ body {
 
 .perfil-usuario:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 12px #e8d6ba;
+    box-shadow: 0 0 15px 5px rgba(232, 214, 186, 0.7);
 }
 
 .seccion-busqueda {
@@ -126,14 +126,34 @@ body {
     margin-bottom: 65px;
 }
 
-.contenedor-generos {
+.carrusel-generos {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    align-items: center;
     gap: 12px;
 }
 
-.genero {
+.ventana-generos {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.pista-generos {
+    --espacio-generos: 12px;
+    display: flex;
+    gap: var(--espacio-generos);
+    transition: transform 0.55s ease-in-out;
+    will-change: transform;
+}
+
+.pista-generos .genero {
+    flex: 0 0 calc(
+        (100% - 4 * var(--espacio-generos)) / 5
+    );
+
+    min-width: 0;
     height: 210px;
     position: relative;
     display: flex;
@@ -174,6 +194,32 @@ body {
     color: #e8d6ba;
 }
 
+.flecha-genero {
+    width: 42px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #382547;
+    color: #e8d6ba;
+    border: none;
+    border-radius: 10px;
+    font-size: 26px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.flecha-genero:hover:not(:disabled) {
+    background-color: #80618f;
+    transform: scale(1.08);
+}
+
+.flecha-genero:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
 .seccion-recomendaciones {
     width: 100%;
     padding-bottom: 40px;
@@ -183,7 +229,7 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: safe center;
     gap: 5px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -230,16 +276,20 @@ body {
 
 @media (max-width: 1000px) {
 
-    .contenedor-generos {
-        grid-template-columns: repeat(3, 1fr);
+    .pista-generos {
+        --espacio-generos: 7px;
     }
 
-    .genero {
-        height: 180px;
+    .pista-generos .genero {
+        height: 170px;
     }
 
     .genero span {
-        font-size: 20px;
+        font-size: 16px;
+    }
+
+    .flecha-genero {
+        width: 35px;
     }
 
     .pelicula {
@@ -275,16 +325,26 @@ body {
         font-size: 23px;
     }
 
-    .contenedor-generos {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+    .carrusel-generos {
+        gap: 5px;
     }
 
-    .genero {
-        height: 140px;
+    .pista-generos {
+        --espacio-generos: 4px;
+    }
+
+    .pista-generos .genero {
+        height: 120px;
     }
 
     .genero span {
+        font-size: 10px;
+        overflow-wrap: anywhere;
+    }
+
+    .flecha-genero {
+        width: 25px;
+        height: 45px;
         font-size: 17px;
     }
 
@@ -295,5 +355,14 @@ body {
 
     .pelicula:hover {
         width: 105px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pista-generos,
+    .genero img,
+    .pelicula,
+    .perfil-usuario {
+        transition: none;
     }
 }

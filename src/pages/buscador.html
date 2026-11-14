@@ -5,7 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Explorar películas</title>
+
     <link rel="stylesheet" href="../styles/buscador.css">
 </head>
 
@@ -15,10 +17,10 @@
 
         <header class="encabezado">
 
-            <h1>Buscar</h1>
+            <h1>EXPLORAR</h1>
 
-            <a href="#" class="perfil-usuario">
-            <img src="../../catalogoPeliculas/public/imagenes/perfiles/FotoPerfil.jpeg" alt="Foto de perfil">
+            <a href="perfil.html" class="perfil-usuario">
+                <img src="../../catalogoPeliculas/public/imagenes/perfiles/FotoPerfil.jpeg" alt="Foto de perfil">
             </a>
 
         </header>
@@ -46,35 +48,7 @@
 
             <h2>Explora por género</h2>
             <div class="linea"></div>
-
-            <div class="contenedor-generos">
-
-                <a href="#" class="genero">
-                    <img src="../../catalogoPeliculas/public/imagenes/fondos/animadadif.jpg" alt="Películas animadas">
-                    <span>ANIMADA</span>
-                </a>
-
-                <a href="#" class="genero">
-                    <img src="../../catalogoPeliculas/public/imagenes/fondos/terrordif.jpg" alt="Películas de terror">
-                    <span>TERROR</span>
-                </a>
-
-                <a href="#" class="genero">
-                    <img src="../../catalogoPeliculas/public/imagenes/fondos/romancedif.jpg" alt="Películas románticas">
-                    <span>ROMANCE</span>
-                </a>
-
-                <a href="#" class="genero">
-                    <img src="../../catalogoPeliculas/public/imagenes/fondos/comediadif.jpg" alt="Películas de comedia">
-                    <span>COMEDIA</span>
-                </a>
-
-                <a href="#" class="genero">
-                    <img src="../../catalogoPeliculas/public/imagenes/fondos/parodiadif.jpg" alt="Películas de parodia">
-                    <span>PARODIA</span>
-                </a>
-
-            </div>
+            <div id="carrusel-generos"></div>
 
         </section>
 
@@ -86,47 +60,69 @@
             <div class="contenedor-recomendaciones">
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterObsession.webp" alt="Película 1">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterActividadPar.jpg" alt="Película 1"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterInvincible.jpg"  alt="Película 2">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterAvatar.jpg" alt="Película 2"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterCars.jpg" alt="Película 3">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterCars.jpg" alt="Película 3"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterActividadPar.jpg" alt="Película 4">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterF1.jpeg" alt="Película 4"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterF1.jpeg" alt="Película 5">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterInactividadPar.jpg" alt="Película 5"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterAvatar.jpg" alt="Película 6">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterInvincible.jpg" alt="Película 6"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterInactividadPar.jpg" alt="Película 7">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterObsession.webp" alt="Película 7"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterPaddington.jpeg" alt="Película 8">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterPaddington.jpeg" alt="Película 8"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterShrek2.webp" alt="Película 9">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterRec.jpeg" alt="Película 9"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterRec.jpeg" alt="Película 10">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterShrek2.webp" alt="Película 10"
+                    >
                 </a>
 
                 <a href="#" class="pelicula">
-                    <img src="../../catalogoPeliculas/public/imagenes/posters/PosterSouthPark.jpg" alt="Película 11">
+                    <img
+                        src="../../catalogoPeliculas/public/imagenes/posters/PosterSouthPark.jpg" alt="Película 11"
+                    >
                 </a>
 
             </div>
@@ -134,6 +130,16 @@
         </section>
 
     </main>
+
+    <script crossorigin
+        src="https://unpkg.com/react@18/umd/react.production.min.js">
+    </script>
+
+    <script crossorigin
+        src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+    </script>
+
+    <script src="../components/carrusel.js"></script>
 
 </body>
 </html>
