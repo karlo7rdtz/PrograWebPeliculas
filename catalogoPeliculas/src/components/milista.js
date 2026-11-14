@@ -1,68 +1,6 @@
 
-const h = React.createElement;
 
-const peliculasEjemplo = [
-    {
-        id: 1,
-        titulo: "Interestelar",
-        tipo: "Película",
-        genero: "Ciencia ficción",
-        emoji: "🚀",
-        color: "#455c77",
-        imagen: "",
-        descripcion: "Un viaje espacial en busca de un nuevo hogar para la humanidad."
-    },
-    {
-        id: 2,
-        titulo: "Fantastic Mr. Fox",
-        tipo: "Película",
-        genero: "Animación",
-        emoji: "🦊",
-        color: "#a46b43",
-        imagen: "",
-        descripcion: "Un astuto zorro pone en peligro la tranquilidad de su familia."
-    },
-    {
-        id: 3,
-        titulo: "El viaje de Chihiro",
-        tipo: "Película",
-        genero: "Fantasía",
-        emoji: "🌌",
-        color: "#347b77",
-        imagen: "",
-        descripcion: "Una niña descubre un misterioso mundo lleno de espíritus."
-    },
-    {
-        id: 4,
-        titulo: "Stranger Things",
-        tipo: "Serie",
-        genero: "Misterio",
-        emoji: "🚲",
-        color: "#733a53",
-        imagen: "",
-        descripcion: "Un grupo de amigos descubre sucesos sobrenaturales."
-    },
-    {
-        id: 5,
-        titulo: "The Last of Us",
-        tipo: "Serie",
-        genero: "Drama",
-        emoji: "🍄",
-        color: "#566448",
-        imagen: "",
-        descripcion: "Dos sobrevivientes atraviesan un mundo devastado."
-    },
-    {
-        id: 6,
-        titulo: "Avatar",
-        tipo: "Serie",
-        genero: "Aventura",
-        emoji: "🌊",
-        color: "#486a91",
-        imagen: "",
-        descripcion: "Un joven debe dominar los cuatro elementos."
-    }
-];
+const h = React.createElement;
 
 function leerDatos(clave, valorInicial) {
     try {
@@ -74,50 +12,53 @@ function leerDatos(clave, valorInicial) {
 }
 
 function MiLista() {
-const carpetaImagenes =
-    "../../catalogoPeliculas/public/imagenes/posters/";
-    const [peliculas] = React.useState(() =>
-        leerDatos("miListaPeliculas", peliculasEjemplo)
+    const [ids, setIds] = React.useState(
+        () => window.CineDatos.obtenerMiLista()
     );
 
     const [filtro, setFiltro] = React.useState("Todas");
 
-    const [favoritos, setFavoritos] = React.useState(() =>
-        leerDatos("peliculasFavoritas", [])
+    const [favoritos, setFavoritos] = React.useState(
+        () => leerDatos("peliculasFavoritas", [])
     );
 
-    const [resenas, setResenas] = React.useState(() =>
-        leerDatos("resenasPeliculas", [])
+    const [resenas, setResenas] = React.useState(
+        () => leerDatos("resenasPeliculas", [])
     );
 
-    const [seleccionada, setSeleccionada] = React.useState(null);
+    const [peliculaSeleccionada, setPeliculaSeleccionada] =
+        React.useState(null);
+
     const [modal, setModal] = React.useState("");
     const [calificacion, setCalificacion] = React.useState("5");
     const [comentario, setComentario] = React.useState("");
 
     const carrusel = React.useRef(null);
 
-    const visibles = peliculas.filter((pelicula) =>
+    React.useEffect(() => {
+        function actualizar() {
+            setIds(window.CineDatos.obtenerMiLista());
+        }
+
+        window.addEventListener("listaActualizada", actualizar);
+        window.addEventListener("storage", actualizar);
+
+        return () => {
+            window.removeEventListener("listaActualizada", actualizar);
+            window.removeEventListener("storage", actualizar);
+        };
+    }, []);
+
+    const guardadas = ids
+        .map((id) => window.CineDatos.peliculas.find((p) => p.id === id))
+        .filter(Boolean);
+
+    const visibles = guardadas.filter((pelicula) =>
         filtro === "Todas" || pelicula.tipo === filtro
     );
 
-    function moverCarrusel(direccion) {
-        if (carrusel.current) {
-            const tarjeta = carrusel.current.querySelector(".tarjeta-pelicula");
-
-            if (tarjeta) {
-                const distancia = tarjeta.getBoundingClientRect().width + 22;
-
-                carrusel.current.scrollBy({
-                    left: distancia * direccion,
-                    behavior: "smooth"
-                });
-            }
-        }
-    }
-
-    function cambiarFiltro(nuevoFiltro) {
-        setFiltro(nuevoFiltro);
+    function cambiarFiltro(tipo) {
+        setFiltro(tipo);
 
         if (carrusel.current) {
             carrusel.current.scrollTo({
@@ -127,23 +68,52 @@ const carpetaImagenes =
         }
     }
 
-    function cambiarFavorito(pelicula) {
-        const existe = favoritos.includes(pelicula.id);
+    function moverCarrusel(direccion) {
+        if (!carrusel.current) return;
 
-        const nuevos = existe
-            ? favoritos.filter((id) => id !== pelicula.id)
-            : [...favoritos, pelicula.id];
+        const tarjeta = carrusel.current.querySelector(".tarjeta-pelicula");
 
-        setFavoritos(nuevos);
-        localStorage.setItem("peliculasFavoritas", JSON.stringify(nuevos));
+        if (!tarjeta) return;
+
+        const ancho = tarjeta.getBoundingClientRect().width;
+        const espacio = parseFloat(
+            window.getComputedStyle(carrusel.current).gap
+        ) || 0;
+
+        carrusel.current.scrollBy({
+            left: direccion * (ancho + espacio),
+            behavior: "smooth"
+        });
+    }
+
+    function quitarDeLista(id) {
+        window.CineDatos.cambiarEnMiLista(id);
+    }
+
+    function cambiarFavorito(id) {
+        const nuevos = favoritos.includes(id)
+            ? favoritos.filter((item) => item !== id)
+            : [...favoritos, id];
+
+        try {
+            localStorage.setItem(
+                "peliculasFavoritas",
+                JSON.stringify(nuevos)
+            );
+
+            setFavoritos(nuevos);
+        } catch (error) {
+            alert("No se pudo actualizar favoritos.");
+        }
     }
 
     function abrirResena(pelicula) {
-        setSeleccionada(pelicula);
-
         const anterior = resenas.find((r) => r.id === pelicula.id);
 
-        setCalificacion(anterior ? String(anterior.calificacion) : "5");
+        setPeliculaSeleccionada(pelicula);
+        setCalificacion(
+            anterior ? String(anterior.calificacion) : "5"
+        );
         setComentario(anterior ? anterior.comentario : "");
         setModal("resena");
     }
@@ -151,70 +121,104 @@ const carpetaImagenes =
     function guardarResena(evento) {
         evento.preventDefault();
 
-        const nuevaResena = {
-            id: seleccionada.id,
-            titulo: seleccionada.titulo,
+        if (!peliculaSeleccionada) return;
+
+        const nueva = {
+            id: peliculaSeleccionada.id,
+            titulo: peliculaSeleccionada.titulo,
             calificacion: Number(calificacion),
             comentario: comentario.trim()
         };
 
-        const nuevas = resenas.filter((r) =>
-            r.id !== seleccionada.id
+        const nuevas = resenas.filter(
+            (r) => r.id !== peliculaSeleccionada.id
         );
 
-        nuevas.push(nuevaResena);
+        nuevas.push(nueva);
 
-        setResenas(nuevas);
-        localStorage.setItem("resenasPeliculas", JSON.stringify(nuevas));
+        try {
+            localStorage.setItem(
+                "resenasPeliculas",
+                JSON.stringify(nuevas)
+            );
 
-        setModal("");
-        setSeleccionada(null);
+            setResenas(nuevas);
+            cerrarModal();
+        } catch (error) {
+            alert("No se pudo guardar la reseña.");
+        }
     }
 
     function abrirInformacion(pelicula) {
-        setSeleccionada(pelicula);
+        setPeliculaSeleccionada(pelicula);
         setModal("informacion");
     }
 
     function cerrarModal() {
         setModal("");
-        setSeleccionada(null);
+        setPeliculaSeleccionada(null);
     }
 
+    React.useEffect(() => {
+        function cerrarConEscape(evento) {
+            if (evento.key === "Escape") {
+                cerrarModal();
+            }
+        }
+
+        window.addEventListener("keydown", cerrarConEscape);
+
+        return () => {
+            window.removeEventListener("keydown", cerrarConEscape);
+        };
+    }, []);
+
     function crearTarjeta(pelicula) {
-        const esFavorita = favoritos.includes(pelicula.id);
-        const tieneResena = resenas.some((r) => r.id === pelicula.id);
+        const favorita = favoritos.includes(pelicula.id);
+        const tieneResena = resenas.some(
+            (r) => r.id === pelicula.id
+        );
 
         return h(
             "article",
             {
-                className: "tarjeta-pelicula",
-                key: pelicula.id
+                key: pelicula.id,
+                className: "tarjeta-pelicula"
             },
 
             h(
                 "div",
                 {
-                    className: "fondo-pelicula",
-                    style: { "--color-poster": pelicula.color }
+                    className: "portada-pelicula",
+                    style: {
+                        "--color-poster": pelicula.color
+                    }
                 },
 
-                pelicula.imagen && h("img", {
+                h(
+                    "span",
+                    { className: "emoji-pelicula" },
+                    pelicula.emoji
+                ),
+
+                h("img", {
+                    className: "imagen-pelicula",
                     src: pelicula.imagen,
-                    alt: pelicula.titulo
+                    alt: pelicula.titulo,
+                    onError: (evento) => {
+                        evento.currentTarget.style.display = "none";
+                    }
                 }),
 
-                h("span", { className: "genero-pelicula" }, pelicula.genero),
-
-                !pelicula.imagen && h(
+                h(
                     "span",
-                    { className: "ilustracion-pelicula" },
-                    pelicula.emoji
+                    { className: "tipo-pelicula" },
+                    pelicula.tipo
                 ),
 
                 h(
                     "h3",
-                    { className: "titulo-portada" },
+                    { className: "nombre-pelicula" },
                     pelicula.titulo
                 )
             ),
@@ -225,7 +229,11 @@ const carpetaImagenes =
 
                 h("h3", null, pelicula.titulo),
 
-                h("p", null, pelicula.tipo + " · " + pelicula.genero),
+                h(
+                    "p",
+                    null,
+                    pelicula.tipo + " · " + pelicula.genero
+                ),
 
                 h(
                     "div",
@@ -234,31 +242,45 @@ const carpetaImagenes =
                     h(
                         "button",
                         {
-                            type: "button",
                             className: "accion",
-                            onClick: () => cambiarFavorito(pelicula)
+                            type: "button",
+                            onClick: () => cambiarFavorito(pelicula.id)
                         },
-                        esFavorita ? "♥ Quitar favorito" : "♡ Guardar favorito"
+                        favorita
+                            ? "♥ Quitar de favoritos"
+                            : "♡ Agregar a favoritos"
                     ),
 
                     h(
                         "button",
                         {
-                            type: "button",
                             className: "accion",
+                            type: "button",
                             onClick: () => abrirResena(pelicula)
                         },
-                        tieneResena ? "★ Editar reseña" : "☆ Calificar / Reseña"
+                        tieneResena
+                            ? "★ Editar reseña"
+                            : "☆ Calificar / Reseña"
                     ),
 
                     h(
                         "button",
                         {
-                            type: "button",
                             className: "accion principal",
+                            type: "button",
                             onClick: () => abrirInformacion(pelicula)
                         },
                         "ⓘ Ver información"
+                    ),
+
+                    h(
+                        "button",
+                        {
+                            className: "accion",
+                            type: "button",
+                            onClick: () => quitarDeLista(pelicula.id)
+                        },
+                        "Quitar de mi lista"
                     )
                 )
             )
@@ -284,7 +306,7 @@ const carpetaImagenes =
             h(
                 "p",
                 { className: "descripcion-lista" },
-                "Todas las historias que quieres descubrir, en un solo lugar."
+                "Guarda las historias que quieres descubrir y organízalas en un solo lugar."
             )
         ),
 
@@ -305,7 +327,7 @@ const carpetaImagenes =
                     h(
                         "p",
                         { className: "contador-lista" },
-                        visibles.length + " títulos en tu colección"
+                        guardadas.length + " títulos guardados"
                     )
                 ),
 
@@ -320,11 +342,16 @@ const carpetaImagenes =
                                 key: tipo,
                                 type: "button",
                                 className:
-                                    "filtro" + (filtro === tipo ? " activo" : ""),
+                                    "filtro" +
+                                    (filtro === tipo ? " activo" : ""),
                                 onClick: () => cambiarFiltro(tipo)
                             },
-                            tipo === "Película" ? "Películas" :
-                            tipo === "Serie" ? "Series" : "Todas"
+
+                            tipo === "Película"
+                                ? "Películas"
+                                : tipo === "Serie"
+                                    ? "Series"
+                                    : "Todas"
                         )
                     )
                 )
@@ -338,8 +365,8 @@ const carpetaImagenes =
                     h(
                         "button",
                         {
-                            className: "flecha-carrusel",
                             type: "button",
+                            className: "flecha-carrusel",
                             "aria-label": "Anterior",
                             onClick: () => moverCarrusel(-1)
                         },
@@ -358,8 +385,8 @@ const carpetaImagenes =
                     h(
                         "button",
                         {
-                            className: "flecha-carrusel",
                             type: "button",
+                            className: "flecha-carrusel",
                             "aria-label": "Siguiente",
                             onClick: () => moverCarrusel(1)
                         },
@@ -369,12 +396,33 @@ const carpetaImagenes =
                 : h(
                     "div",
                     { className: "lista-vacia" },
-                    h("h3", null, "No hay títulos en esta categoría"),
-                    h("p", null, "Prueba seleccionando otro filtro.")
+
+                    h(
+                        "h3",
+                        null,
+                        "Todavía no hay títulos aquí"
+                    ),
+
+                    h(
+                        "p",
+                        null,
+                        "Agrega películas o series desde el catálogo para verlas en tu lista."
+                    ),
+
+                    h(
+                        "a",
+                        {
+                            href: "buscador.html",
+                            className: "ir-catalogo"
+                        },
+                        "Explorar catálogo"
+                    )
                 )
         ),
 
-        modal === "resena" && seleccionada && h(
+        modal === "resena" &&
+        peliculaSeleccionada &&
+        h(
             "div",
             { className: "fondo-modal" },
 
@@ -382,25 +430,36 @@ const carpetaImagenes =
                 "form",
                 {
                     className: "modal-lista",
+                    role: "dialog",
+                    "aria-modal": "true",
                     onSubmit: guardarResena
                 },
 
                 h("h2", null, "Calificar y reseñar"),
 
-                h("p", null, seleccionada.titulo),
+                h(
+                    "p",
+                    null,
+                    peliculaSeleccionada.titulo
+                ),
 
                 h(
                     "div",
                     { className: "campo-resena" },
 
-                    h("label", { htmlFor: "calificacion" }, "Calificación"),
+                    h(
+                        "label",
+                        { htmlFor: "calificacion" },
+                        "Calificación"
+                    ),
 
                     h(
                         "select",
                         {
                             id: "calificacion",
                             value: calificacion,
-                            onChange: (e) => setCalificacion(e.target.value)
+                            onChange: (evento) =>
+                                setCalificacion(evento.target.value)
                         },
 
                         [1, 2, 3, 4, 5].map((numero) =>
@@ -410,7 +469,8 @@ const carpetaImagenes =
                                     key: numero,
                                     value: String(numero)
                                 },
-                                "★".repeat(numero) + " (" + numero + "/5)"
+                                "★".repeat(numero) +
+                                " (" + numero + "/5)"
                             )
                         )
                     )
@@ -420,13 +480,18 @@ const carpetaImagenes =
                     "div",
                     { className: "campo-resena" },
 
-                    h("label", { htmlFor: "comentario" }, "Tu reseña"),
+                    h(
+                        "label",
+                        { htmlFor: "comentario" },
+                        "Tu reseña"
+                    ),
 
                     h("textarea", {
                         id: "comentario",
                         value: comentario,
-                        placeholder: "¿Qué te pareció esta historia?",
-                        onChange: (e) => setComentario(e.target.value)
+                        placeholder: "Escribe tu opinión...",
+                        onChange: (evento) =>
+                            setComentario(evento.target.value)
                     })
                 ),
 
@@ -443,8 +508,8 @@ const carpetaImagenes =
                     h(
                         "button",
                         {
-                            type: "button",
                             className: "cancelar",
+                            type: "button",
                             onClick: cerrarModal
                         },
                         "Cancelar"
@@ -453,23 +518,39 @@ const carpetaImagenes =
             )
         ),
 
-        modal === "informacion" && seleccionada && h(
+        modal === "informacion" &&
+        peliculaSeleccionada &&
+        h(
             "div",
             { className: "fondo-modal" },
 
             h(
                 "div",
-                { className: "modal-lista" },
+                {
+                    className: "modal-lista",
+                    role: "dialog",
+                    "aria-modal": "true"
+                },
 
-                h("h2", null, seleccionada.titulo),
+                h(
+                    "h2",
+                    null,
+                    peliculaSeleccionada.titulo
+                ),
 
                 h(
                     "p",
                     null,
-                    seleccionada.tipo + " · " + seleccionada.genero
+                    peliculaSeleccionada.tipo +
+                    " · " +
+                    peliculaSeleccionada.genero
                 ),
 
-                h("p", null, seleccionada.descripcion),
+                h(
+                    "p",
+                    null,
+                    peliculaSeleccionada.descripcion
+                ),
 
                 h(
                     "div",
@@ -489,10 +570,11 @@ const carpetaImagenes =
     );
 }
 
-const contenedor = document.getElementById("mi-lista-react");
+const contenedorLista =
+    document.getElementById("mi-lista-react");
 
-if (contenedor) {
-    ReactDOM.createRoot(contenedor).render(
+if (contenedorLista) {
+    ReactDOM.createRoot(contenedorLista).render(
         h(MiLista)
     );
 }
