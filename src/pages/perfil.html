@@ -13,54 +13,13 @@
 
     <main class="perfil">
 
-        <!-- Encabezado -->
         <header class="encabezado">
-            <a href="#" class="volver">
+            <a href="buscador.html" class="volver">
                 &#8592; Volver al inicio
             </a>
         </header>
 
-        <section class="presentacion">
-
-            <img
-                src="../../catalogoPeliculas/public/imagenes/perfiles/FotoPerfil.jpeg"
-                alt="Foto de perfil"
-                class="foto-perfil"
-            >
-
-            <div class="informacion-usuario">
-
-                <p class="subtitulo">PERFIL DE ESPECTADOR</p>
-
-                <h1>Usuario</h1>
-
-                <a href="#" class="editar">
-                    EDITAR PERFIL
-                </a>
-
-            </div>
-
-        </section>
-
-        <section class="preferencias">
-
-            <h2>MIS FAVORITOS</h2>
-
-            <div class="contenedor-preferencias">
-
-                <div class="tarjeta-preferencia">
-                    <p>PELÍCULA FAVORITA</p>
-                    <h3>Fantastic Mr. Fox</h3>
-                </div>
-
-                <div class="tarjeta-preferencia">
-                    <p>SERIE FAVORITA</p>
-                    <h3>Avatar The Last Airbender</h3>
-                </div>
-
-            </div>
-
-        </section>
+        <div id="perfil-react"></div>
 
         <section class="opciones">
 
@@ -69,39 +28,30 @@
             <div class="contenedor-opciones">
 
                 <a href="#" class="opcion">
-
                     <img
                         src="../../catalogoPeliculas/public/imagenes/perfiles/Favoritos.jpeg"
                         alt="Favoritos"
                         class="imagen-opcion"
                     >
-
                     <span>FAVORITOS</span>
-
                 </a>
 
-                <a href="#" class="opcion">
-
+                <a href="milista.html" class="opcion">
                     <img
                         src="../../catalogoPeliculas/public/imagenes/perfiles/Lista.jpeg"
                         alt="Mi lista"
                         class="imagen-opcion"
                     >
-
                     <span>MI LISTA</span>
-
                 </a>
 
                 <a href="#" class="opcion">
-
                     <img
                         src="../../catalogoPeliculas/public/imagenes/perfiles/Reseñas.jpeg"
                         alt="Reseñas"
                         class="imagen-opcion"
                     >
-
                     <span>RESEÑAS</span>
-
                 </a>
 
             </div>
@@ -110,5 +60,10 @@
 
     </main>
 
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="../components/perfil.js"></script>
+
 </body>
+
 </html>
