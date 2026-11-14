@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mis Favoritos | Catálogo de Películas</title>
+
+    <link rel="stylesheet" href="../styles/favoritos.css">
+</head>
+
+<body>
+
+    <!-- MENÚ LATERAL -->
+    <aside class="menu-lateral">
+
+        <div class="usuario">
+            <div class="avatar"></div>
+            <span>Usuario</span>
+        </div>
+
+        <nav class="navegacion">
+
+            <a href="../../catalogoPeliculas/index.html" class="opcion-menu">
+                <span class="icono">⌂</span>
+                <span>Inicio</span>
+            </a>
+
+            <a href="./buscador.html" class="opcion-menu">
+                <span class="icono">⌕</span>
+                <span>Buscar</span>
+            </a>
+
+            <a href="./favoritos.html" class="opcion-menu activo">
+                <span class="icono">♥</span>
+                <span>Favoritos</span>
+            </a>
+
+            <span class="opcion-menu pendiente" aria-disabled="true">
+                <span class="icono">☷</span>
+                <span>Mi lista</span>
+            </span>
+
+            <a href="./perfil.html" class="opcion-menu">
+                <span class="icono">♙</span>
+                <span>Perfil</span>
+            </a>
+
+        </nav>
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="contenido-principal">
+
+        <!-- DECORACIÓN DE CLAQUETA -->
+        <header class="claqueta">
+            <div class="claqueta-superior"></div>
+            <div class="claqueta-inferior"></div>
+        </header>
+
+
+        <!-- ENCABEZADO -->
+        <section class="encabezado-favoritos">
+
+            <div>
+                <p class="subtitulo">TU COLECCIÓN PERSONAL</p>
+                <h1>Mis Favoritos <span>♥</span></h1>
+
+                <p class="descripcion">
+                    Todas esas historias que merecen
+                    un lugar especial en tu colección.
+                </p>
+            </div>
+
+            <div class="contador">
+                <strong id="totalFavoritos">0</strong>
+                <span>Guardados</span>
+            </div>
+
+        </section>
+
+
+        <!-- FILTROS Y BÚSQUEDA -->
+        <section class="herramientas">
+
+            <div class="filtros">
+                <button class="filtro activo" data-filtro="todos">
+                    Todos
+                </button>
+
+                <button class="filtro" data-filtro="pelicula">
+                    Películas
+                </button>
+
+                <button class="filtro" data-filtro="serie">
+                    Series
+                </button>
+            </div>
+
+            <div class="buscador">
+                <input
+                    type="search"
+                    id="buscarFavorito"
+                    placeholder="Buscar en mis favoritos..."
+                >
+            </div>
+
+        </section>
+
+
+        <!-- CARRUSEL DE FAVORITOS -->
+        <section class="seccion-peliculas">
+
+            <div class="titulo-seccion">
+                <h2>Historias que te encantan</h2>
+                <p>Explora tus películas y series guardadas</p>
+            </div>
+
+            <div class="contenedor-carrusel">
+
+                <button id="anterior" class="flecha" aria-label="Anterior">
+                    &#10094;
+                </button>
+
+                <div class="carrusel" id="carruselFavoritos">
+                    <!-- Las tarjetas se crearán con JavaScript -->
+                </div>
+
+                <button id="siguiente" class="flecha" aria-label="Siguiente">
+                    &#10095;
+                </button>
+
+            </div>
+
+            <!-- MENSAJE CUANDO NO HAY FAVORITOS -->
+            <div id="sinFavoritos" class="mensaje-vacio" hidden>
+                <div class="corazon-vacio">♡</div>
+                <h3>Todavía no tienes favoritos</h3>
+                <p>
+                    Regresa al catálogo y guarda las historias
+                    que más te gustan.
+                </p>
+                <a href="../../catalogoPeliculas/index.html">
+                    Explorar catálogo
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="../components/favoritos.js"></script>
+
+</body>
+</html>
+    
