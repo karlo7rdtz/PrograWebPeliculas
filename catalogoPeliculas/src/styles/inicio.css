@@ -1187,6 +1187,53 @@
   font-size: 12px;
 }
 
+/* Apartado de usuario */
+.cine-usuario {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Foto de perfil */
+.cine-usuario .cine-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 3px solid transparent;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+.cine-usuario:hover .cine-avatar,
+.cine-usuario:focus-visible .cine-avatar {
+    transform: scale(1.08);
+
+    border-color: #e8d09e;
+
+    box-shadow:
+        0 0 12px rgba(232, 208, 158, 0.8),
+        0 0 25px rgba(232, 208, 158, 0.5),
+        0 0 40px rgba(232, 208, 158, 0.25);
+}
+
+/* Nombre del usuario */
+.cine-usuario span {
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.cine-usuario:hover span {
+    color: #e8d09e;
+}
+
 /* AJUSTES PARA CELULAR */
 
 @media (max-width: 600px) {

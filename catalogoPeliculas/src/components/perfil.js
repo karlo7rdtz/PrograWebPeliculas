@@ -1,6 +1,5 @@
 
-const fotoInicial =
-    "../../catalogoPeliculas/public/imagenes/perfiles/FotoPerfil.jpeg";
+const fotoInicial = "/imagenes/perfiles/FotoPerfil.jpeg";
 
 const datosIniciales = {
     nombre: "Usuario",

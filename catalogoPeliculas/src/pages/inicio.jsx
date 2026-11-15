@@ -148,10 +148,44 @@ function centrarTarjeta(carrusel, tarjeta, suave = true) {
 }
 
 export default function Inicio() {
-  // Filtros y navegación.
-  const [genero, setGenero] = useState("Todos");
-  const [tipo, setTipo] = useState("Todos");
-  const [busqueda, setBusqueda] = useState("");
+
+const [usuario, setUsuario] = useState(() => {
+  try {
+    return JSON.parse(localStorage.getItem("perfilUsuario")) || {};
+  } catch {
+    return {};
+  }
+});
+
+useEffect(() => {
+  function actualizarUsuario() {
+    try {
+      setUsuario(JSON.parse(localStorage.getItem("perfilUsuario")) || {});
+    } catch {
+      setUsuario({});
+    }
+  }
+
+  window.addEventListener("pageshow", actualizarUsuario);
+  window.addEventListener("storage", actualizarUsuario);
+
+  return () => {
+    window.removeEventListener("pageshow", actualizarUsuario);
+    window.removeEventListener("storage", actualizarUsuario);
+  };
+}, []);
+
+const parametros = new URLSearchParams(window.location.search);
+
+const [genero, setGenero] = useState(
+    parametros.get("genero") || "Todos"
+);
+
+const [tipo, setTipo] = useState("Todos");
+
+const [busqueda, setBusqueda] = useState(
+    parametros.get("busqueda") || ""
+);
   const [vista, setVista] = useState("inicio");
   const [seleccionado, setSeleccionado] = useState("shrek2");
 
@@ -169,7 +203,10 @@ export default function Inicio() {
   );
 
   // Detalles y animación.
-  const [detalle, setDetalle] = useState(null);
+  const [detalle, setDetalle] = useState(() => {
+  const id = new URLSearchParams(window.location.search).get("pelicula");
+  return catalogo.find((contenido) => contenido.id === id) ?? null;
+  });
   const [animando, setAnimando] = useState(false);
 
   // Referencias.
@@ -494,14 +531,26 @@ export default function Inicio() {
     <div className="cine-app">
       {/* MENÚ LATERAL */}
       <aside className="cine-menu">
-        <div className="cine-usuario">
-          <Imagen
-            src="/imagenes/perfiles/avatar.png"
-            alt="Usuario"
-            className="cine-avatar"
-          />
-          <span>Usuario</span>
-        </div>
+<div
+  className="cine-usuario"
+  onClick={() => window.location.href = "/src/pages/perfil.html"}
+  role="button"
+  tabIndex={0}
+  onKeyDown={(evento) => {
+    if (evento.key === "Enter" || evento.key === " ") {
+      evento.preventDefault();
+      window.location.href = "/src/pages/perfil.html";
+    }
+  }}
+>
+  <Imagen
+    src={usuario.foto || "/imagenes/perfiles/FotoPerfil.jpeg"}
+    alt="Foto de perfil"
+    className="cine-avatar"
+  />
+
+  <span>{usuario.nombre || "Usuario"}</span>
+</div>
 
         <nav aria-label="Navegación principal">
           <button
@@ -515,13 +564,10 @@ export default function Inicio() {
             Inicio
           </button>
 
-          <button
-            type="button"
-            onClick={() => buscadorRef.current?.focus()}
-          >
-            <span className="cine-icono">
-              <Icono nombre="buscar" />
-            </span>
+          <button type="button" onClick={() => window.location.href = "/src/pages/buscador.html"} >
+          <span className="cine-icono">
+            <Icono nombre="buscar" />
+          </span>
             Buscar
           </button>
 

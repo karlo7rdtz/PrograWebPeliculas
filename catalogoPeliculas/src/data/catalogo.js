@@ -364,6 +364,56 @@ const series = [
     "Una aventura de Aang en el mundo de los cuatro elementos.",
   ],
 
+  [
+    "actividad-paranormal",
+    "Actividad Paranormal",
+    2007,
+    ["Terror", "Thriller"],
+    "Una pareja comienza a experimentar sucesos extraños en su casa. Para descubrir qué ocurre, instala cámaras que registran acontecimientos cada vez más aterradores.",
+  ],
+  [
+    "cars",
+    "Cars",
+    2006,
+    ["Animación", "Comedia", "Aventura"],
+    "Rayo McQueen, un automóvil de carreras, termina accidentalmente en Radiador Springs. Allí descubre que la amistad y el compañerismo son más importantes que ganar.",
+  ],
+  [
+    "f1",
+    "F1",
+    2025,
+    ["Acción", "Drama"],
+    "Un antiguo piloto de Fórmula 1 regresa a las pistas para ayudar a una escudería en dificultades. Junto a un joven compañero, enfrenta los desafíos de la competición.",
+  ],
+  [
+    "inactividad-paranormal",
+    "Inactividad Paranormal",
+    2014,
+    ["Comedia", "Terror"],
+    "Malcolm intenta comenzar una nueva vida, pero pronto vuelve a enfrentarse a fenómenos sobrenaturales. Una serie de situaciones absurdas transforma el terror en comedia.",
+  ],
+  [
+    "obsession",
+    "Obsession",
+    2025,
+    ["Terror", "Romance"],
+    "Un joven desea desesperadamente que su amor sea correspondido, pero su deseo desencadena consecuencias sobrenaturales inquietantes.",
+  ],
+  [
+    "paddington",
+    "Paddington",
+    2014,
+    ["Comedia", "Aventura", "Fantasía"],
+    "Un pequeño oso llega a Londres buscando un nuevo hogar. La familia Brown lo recibe y juntos viven aventuras llenas de humor y amistad.",
+  ],
+  [
+    "rec",
+    "REC",
+    2007,
+    ["Terror", "Thriller"],
+    "Una reportera y su camarógrafo acompañan a unos bomberos durante una emergencia. Al entrar en un edificio, descubren que están atrapados ante una amenaza desconocida.",
+  ],
+
 ];
 // Excepciones: nombres de imágenes diferentes al identificador.
 // Los títulos que no aparecen aquí usan automáticamente:
@@ -648,6 +698,43 @@ const archivosImagenes = {
     poster: "bojack-horsemna.jpg",
     fondo: "bojack-horsemna.jpg",
   },
+
+
+  "actividad-paranormal": {
+    poster: "PosterActividadPar.jpg",
+    fondo: "terrordif.jpg",
+  },
+
+  "cars": {
+    poster: "PosterCars.jpg",
+    fondo: "animadadif.jpg",
+  },
+
+  "f1": {
+    poster: "PosterF1.jpeg",
+    fondo: "acciondif.jpg",
+  },
+
+  "inactividad-paranormal": {
+    poster: "PosterInactividadPar.jpg",
+    fondo: "comediadif.jpg",
+  },
+
+  "obsession": {
+    poster: "PosterObsession.webp",
+    fondo: "terrordif.jpg",
+  },
+
+  "paddington": {
+    poster: "PosterPaddington.jpeg",
+    fondo: "comediadif.jpg",
+  },
+
+  "rec": {
+    poster: "PosterRec.jpeg",
+    fondo: "terrordif.jpg",
+  },
+
 };
 
 function rutaImagen(carpeta, archivo) {

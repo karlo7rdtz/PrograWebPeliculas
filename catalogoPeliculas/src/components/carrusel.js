@@ -2,47 +2,47 @@
 const generos = [
     {
         nombre: "THRILLER",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/thrillerdif.jpg"
+        imagen: "../../public/imagenes/fondos/thrillerdif.jpg"
     },
     {
         nombre: "ROMANCE",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/romancedif.jpg"
+        imagen: "../../public/imagenes/fondos/romancedif.jpg"
     },
     {
         nombre: "ANIMADA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/animadadif.jpg"
+        imagen: "../../public/imagenes/fondos/animadadif.jpg"
     },
     {
         nombre: "COMEDIA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/comediadif.jpg"
+        imagen: "../../public/imagenes/fondos/comediadif.jpg"
     },
     {
         nombre: "TERROR",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/terrordif.jpg"
+        imagen: "../../public/imagenes/fondos/terrordif.jpg"
     },
     {
         nombre: "ACCIÓN",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/acciondif.jpg"
+        imagen: "../../public/imagenes/fondos/acciondif.jpg"
     },
     {
         nombre: "SCI-FI",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/scifidif.jpg"
+        imagen: "../../public/imagenes/fondos/scifidif.jpg"
     },
     {
         nombre: "DRAMA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/dramadif.jpg"
+        imagen: "../../public/imagenes/fondos/dramadif.jpg"
     },
     {
         nombre: "FANTASÍA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/fantasiadif.jpg"
+        imagen: "../../public/imagenes/fondos/fantasiadif.jpg"
     },
     {
         nombre: "AVENTURA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/aventuradif.jpg"
+        imagen: "../../public/imagenes/fondos/aventuradif.jpg"
     },
     {
         nombre: "CRIMEN",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/crimendif.jpg"
+        imagen: "../../public/imagenes/fondos/crimendif.jpg"
     }
 ];
 
@@ -104,13 +104,18 @@ function CarruselGeneros() {
                 },
 
                 generos.map((genero) =>
-                    React.createElement(
-                        "a",
-                        {
-                            href: "#",
-                            className: "genero",
-                            key: genero.nombre
-                        },
+React.createElement(
+    "a",
+    {
+        href: "/?genero=" + encodeURIComponent(
+            genero.nombre === "ANIMADA" ? "Animación" :
+            genero.nombre === "SCI-FI" ? "Ciencia ficción" :
+            genero.nombre.charAt(0) +
+            genero.nombre.slice(1).toLowerCase()
+        ),
+        className: "genero",
+        key: genero.nombre
+    },
 
                         React.createElement(
                             "img",

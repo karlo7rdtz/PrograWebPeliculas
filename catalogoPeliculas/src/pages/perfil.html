@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de usuario</title>
+    <link rel="stylesheet" href="../styles/tipografia.css">
+    <link rel="stylesheet" href="../styles/perfil.css">
+</head>
+
+<body>
+
+    <main class="perfil">
+
+        <header class="encabezado">
+            <a href="/" class="btn-volver">
+                Volver al inicio
+            </a>
+        </header>
+
+        <div id="perfil-react"></div>
+
+        <section class="opciones">
+
+            <h2>MI ACTIVIDAD</h2>
+
+            <div class="contenedor-opciones">
+
+            <a href="favoritos.html" class="opcion">
+                <img src="/imagenes/perfiles/Favoritos.jpeg" alt="Favoritos" class="imagen-opcion">
+                <span>FAVORITOS</span>
+            </a>
+
+<a href="milista.html" class="opcion">
+    <img
+        src="/imagenes/perfiles/Lista.jpeg"
+        alt="Mi lista"
+        class="imagen-opcion"
+    >
+    <span>MI LISTA</span>
+</a>
+
+<a href="#" class="opcion">
+    <img
+        src="/imagenes/perfiles/Reseñas.jpeg"
+        alt="Reseñas"
+        class="imagen-opcion"
+    >
+    <span>RESEÑAS</span>
+</a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="../components/perfil.js"></script>
+
+</body>
+
+</html>

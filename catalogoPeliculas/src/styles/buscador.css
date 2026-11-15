@@ -274,6 +274,27 @@ body {
     border-radius: 10px;
 }
 
+.buscador {
+    font-family: var(--font-texto);
+}
+
+.buscador h1 {
+    font-family: var(--font-titulo);
+}
+
+.buscador h2,
+.buscador h3 {
+    font-family: var(--font-subtitulo);
+}
+
+.buscador p,
+.buscador span,
+.buscador a,
+.buscador button,
+.buscador input {
+    font-family: var(--font-texto);
+}
+
 @media (max-width: 1000px) {
 
     .pista-generos {

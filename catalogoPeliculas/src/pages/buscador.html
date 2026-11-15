@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar películas</title>
+    <link rel="stylesheet" href="../styles/tipografia.css">
+    <link rel="stylesheet" href="../styles/buscador.css">
+</head>
+
+<body>
+
+    <main class="buscador">
+
+        <header class="encabezado">
+
+            <h1>EXPLORAR</h1>
+
+            <a href="perfil.html" class="perfil-usuario">
+                <img src="../../public/imagenes/perfiles/FotoPerfil.jpeg" alt="Foto de perfil">
+            </a>
+
+        </header>
+
+        <section class="seccion-busqueda">
+
+<form class="barra-busqueda" role="search" action="/" method="get">
+
+                <button type="submit" class="boton-buscar">
+                    &#128269;
+                </button>
+
+                <input
+                    type="search"
+                    name="busqueda"
+                    placeholder="Buscar peliculas..."
+                    aria-label="Buscar películas"
+                >
+
+            </form>
+
+        </section>
+
+        <section class="seccion-generos">
+
+            <h2>Explora por genero</h2>
+            <div class="linea"></div>
+            <div id="carrusel-generos"></div>
+
+        </section>
+
+        <section class="seccion-recomendaciones">
+
+            <h2>Recomendaciones para ti</h2>
+            <div class="linea"></div>
+
+            <div class="contenedor-recomendaciones">
+
+ 
+<!-- 1. ACTIVIDAD PARANORMAL -->
+<a href="/?pelicula=actividad-paranormal" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterActividadPar.jpg"
+        alt="Actividad Paranormal"
+    >
+</a>
+
+<!-- 2. AVATAR -->
+<a href="/?pelicula=avatar-pelicula" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterAvatar.jpg"
+        alt="Avatar: Aang"
+    >
+</a>
+
+<!-- 3. CARS -->
+<a href="/?pelicula=cars" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterCars.jpg"
+        alt="Cars"
+    >
+</a>
+
+<!-- 4. F1 -->
+<a href="/?pelicula=f1" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterF1.jpeg"
+        alt="F1"
+    >
+</a>
+
+<!-- 5. INACTIVIDAD PARANORMAL -->
+<a href="/?pelicula=inactividad-paranormal" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterInactividadPar.jpg"
+        alt="Inactividad Paranormal"
+    >
+</a>
+
+<!-- 6. INVINCIBLE -->
+<a href="/?pelicula=invincible" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterInvincible.jpg"
+        alt="Invincible"
+    >
+</a>
+
+<!-- 7. OBSESSION -->
+<a href="/?pelicula=obsession" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterObsession.webp"
+        alt="Obsession"
+    >
+</a>
+
+<!-- 8. PADDINGTON -->
+<a href="/?pelicula=paddington" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterPaddington.jpeg"
+        alt="Paddington"
+    >
+</a>
+
+<!-- 9. REC -->
+<a href="/?pelicula=rec" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterRec.jpeg"
+        alt="REC"
+    >
+</a>
+
+<!-- 10. SHREK 2 -->
+<a href="/?pelicula=shrek2" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterShrek2.webp"
+        alt="Shrek 2"
+    >
+</a>
+
+<!-- 11. SOUTH PARK -->
+<a href="/?pelicula=south-park" class="pelicula">
+    <img
+        src="/imagenes/posters/PosterSouthPark.jpg"
+        alt="South Park"
+    >
+</a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script crossorigin
+        src="https://unpkg.com/react@18/umd/react.production.min.js">
+    </script>
+
+    <script crossorigin
+        src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+    </script>
+
+    <script src="../components/carrusel.js"></script>
+
+</body>
+</html>
