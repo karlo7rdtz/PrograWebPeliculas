@@ -1,5 +1,4 @@
 
-                  
 import { useEffect, useRef, useState } from "react";
 import { catalogo } from "../data/catalogo";
 import "../styles/inicio.css";
@@ -155,10 +154,36 @@ function centrarTarjeta(carrusel, tarjeta, suave = true) {
 }
 
 export default function Inicio() {
-  // FILTROS Y NAVEGACIÓN
-  const [genero, setGenero] = useState("Todos");
+  // PERFIL Y FILTROS DEL CATÁLOGO
+  const [usuario, setUsuario] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("perfilUsuario")) || {};
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    function actualizarUsuario() {
+      try {
+        setUsuario(JSON.parse(localStorage.getItem("perfilUsuario")) || {});
+      } catch {
+        setUsuario({});
+      }
+    }
+
+    window.addEventListener("pageshow", actualizarUsuario);
+    window.addEventListener("storage", actualizarUsuario);
+    return () => {
+      window.removeEventListener("pageshow", actualizarUsuario);
+      window.removeEventListener("storage", actualizarUsuario);
+    };
+  }, []);
+
+  const parametros = new URLSearchParams(window.location.search);
+  const [genero, setGenero] = useState(parametros.get("genero") || "Todos");
   const [tipo, setTipo] = useState("Todos");
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState(parametros.get("busqueda") || "");
   const [vista, setVista] = useState("inicio");
   const [seleccionado, setSeleccionado] = useState("shrek2");
 
@@ -175,7 +200,10 @@ export default function Inicio() {
     useState(leerCalificaciones);
 
   // DETALLES Y ANIMACIÓN
-  const [detalle, setDetalle] = useState(null);
+  const [detalle, setDetalle] = useState(() => {
+    const id = new URLSearchParams(window.location.search).get("pelicula");
+    return catalogo.find((contenido) => contenido.id === id) ?? null;
+  });
   const [animando, setAnimando] = useState(false);
 
   // REFERENCIAS
@@ -496,15 +524,24 @@ export default function Inicio() {
 
       {/* MENÚ LATERAL */}
       <aside className="cine-menu">
-
-        <div className="cine-usuario">
+        <div
+          className="cine-usuario"
+          onClick={() => window.location.href = "/src/pages/perfil.html"}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(evento) => {
+            if (evento.key === "Enter" || evento.key === " ") {
+              evento.preventDefault();
+              window.location.href = "/src/pages/perfil.html";
+            }
+          }}
+        >
           <Imagen
-            src="/imagenes/perfiles/avatar.png"
-            alt="Usuario"
+            src={usuario.foto || "/imagenes/perfiles/FotoPerfil.jpeg"}
+            alt="Foto de perfil"
             className="cine-avatar"
           />
-
-          <span>Usuario</span>
+          <span>{usuario.nombre || "Usuario"}</span>
         </div>
 
         <nav aria-label="Navegación principal">
@@ -525,18 +562,11 @@ export default function Inicio() {
           {/* BUSCAR */}
           <button
             type="button"
-            onClick={() => {
-              cambiarVista("inicio");
-
-              requestAnimationFrame(() => {
-                buscadorRef.current?.focus();
-              });
-            }}
+            onClick={() => window.location.href = "/src/pages/buscador.html"}
           >
             <span className="cine-icono">
               <Icono nombre="buscar" />
             </span>
-
             Buscar
           </button>
 

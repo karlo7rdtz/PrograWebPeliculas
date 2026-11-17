@@ -2,47 +2,47 @@
 const generos = [
     {
         nombre: "THRILLER",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/thrillerdif.jpg"
+        imagen: "/imagenes/fondos/thrillerdif.jpg"
     },
     {
         nombre: "ROMANCE",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/romancedif.jpg"
+        imagen: "/imagenes/fondos/romancedif.jpg"
     },
     {
         nombre: "ANIMADA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/animadadif.jpg"
+        imagen: "/imagenes/fondos/animadadif.jpg"
     },
     {
         nombre: "COMEDIA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/comediadif.jpg"
+        imagen: "/imagenes/fondos/comediadif.jpg"
     },
     {
         nombre: "TERROR",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/terrordif.jpg"
+        imagen: "/imagenes/fondos/terrordif.jpg"
     },
     {
         nombre: "ACCIÓN",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/acciondif.jpg"
+        imagen: "/imagenes/fondos/acciondif.jpg"
     },
     {
         nombre: "SCI-FI",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/scifidif.jpg"
+        imagen: "/imagenes/fondos/scifidif.jpg"
     },
     {
         nombre: "DRAMA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/dramadif.jpg"
+        imagen: "/imagenes/fondos/dramadif.jpg"
     },
     {
         nombre: "FANTASÍA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/fantasiadif.jpg"
+        imagen: "/imagenes/fondos/fantasiadif.jpg"
     },
     {
         nombre: "AVENTURA",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/aventuradif.jpg"
+        imagen: "/imagenes/fondos/aventuradif.jpg"
     },
     {
         nombre: "CRIMEN",
-        imagen: "../../catalogoPeliculas/public/imagenes/fondos/crimendif.jpg"
+        imagen: "/imagenes/fondos/crimendif.jpg"
     }
 ];
 
@@ -107,7 +107,12 @@ function CarruselGeneros() {
                     React.createElement(
                         "a",
                         {
-                            href: "#",
+                            href: "/?genero=" + encodeURIComponent(
+                                genero.nombre === "ANIMADA" ? "Animación" :
+                                genero.nombre === "SCI-FI" ? "Ciencia ficción" :
+                                genero.nombre.charAt(0) +
+                                genero.nombre.slice(1).toLowerCase()
+                            ),
                             className: "genero",
                             key: genero.nombre
                         },
@@ -116,7 +121,7 @@ function CarruselGeneros() {
                             "img",
                             {
                                 src: genero.imagen,
-                                alt: ""
+                                alt: genero.nombre
                             }
                         ),
 
@@ -129,7 +134,6 @@ function CarruselGeneros() {
                 )
             )
         ),
-
 
         React.createElement(
             "button",

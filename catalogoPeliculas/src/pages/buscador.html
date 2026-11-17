@@ -5,9 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Explorar películas</title>
-
+    <link rel="stylesheet" href="../styles/tipografia.css">
     <link rel="stylesheet" href="../styles/buscador.css">
 </head>
 
@@ -20,14 +19,22 @@
             <h1>EXPLORAR</h1>
 
             <a href="perfil.html" class="perfil-usuario">
-                <img src="../../catalogoPeliculas/public/imagenes/perfiles/FotoPerfil.jpeg" alt="Foto de perfil">
+                <img
+                    src="/imagenes/perfiles/FotoPerfil.jpeg"
+                    alt="Foto de perfil"
+                >
             </a>
 
         </header>
 
         <section class="seccion-busqueda">
 
-            <form class="barra-busqueda" role="search">
+            <form
+                class="barra-busqueda"
+                role="search"
+                action="/"
+                method="get"
+            >
 
                 <button type="submit" class="boton-buscar">
                     &#128269;
@@ -59,69 +66,91 @@
 
             <div class="contenedor-recomendaciones">
 
-                <a href="#" class="pelicula">
+                <!-- 1. ACTIVIDAD PARANORMAL -->
+                <a href="/?pelicula=actividad-paranormal" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterActividadPar.jpg" alt="Película 1"
+                        src="/imagenes/posters/PosterActividadPar.jpg"
+                        alt="Actividad Paranormal"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 2. AVATAR -->
+                <a href="/?pelicula=avatar-pelicula" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterAvatar.jpg" alt="Película 2"
+                        src="/imagenes/posters/PosterAvatar.jpg"
+                        alt="Avatar"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 3. CARS -->
+                <a href="/?pelicula=cars" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterCars.jpg" alt="Película 3"
+                        src="/imagenes/posters/PosterCars.jpg"
+                        alt="Cars"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 4. F1 -->
+                <a href="/?pelicula=f1" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterF1.jpeg" alt="Película 4"
+                        src="/imagenes/posters/PosterF1.jpeg"
+                        alt="F1"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 5. INACTIVIDAD PARANORMAL -->
+                <a href="/?pelicula=inactividad-paranormal" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterInactividadPar.jpg" alt="Película 5"
+                        src="/imagenes/posters/PosterInactividadPar.jpg"
+                        alt="Inactividad Paranormal"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 6. INVINCIBLE -->
+                <a href="/?pelicula=invincible" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterInvincible.jpg" alt="Película 6"
+                        src="/imagenes/posters/PosterInvincible.jpg"
+                        alt="Invincible"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 7. OBSESSION -->
+                <a href="/?pelicula=obsession" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterObsession.webp" alt="Película 7"
+                        src="/imagenes/posters/PosterObsession.webp"
+                        alt="Obsession"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 8. PADDINGTON -->
+                <a href="/?pelicula=paddington" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterPaddington.jpeg" alt="Película 8"
+                        src="/imagenes/posters/PosterPaddington.jpeg"
+                        alt="Paddington"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 9. REC -->
+                <a href="/?pelicula=rec" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterRec.jpeg" alt="Película 9"
+                        src="/imagenes/posters/PosterRec.jpeg"
+                        alt="REC"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 10. SHREK 2 -->
+                <a href="/?pelicula=shrek2" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterShrek2.webp" alt="Película 10"
+                        src="/imagenes/posters/PosterShrek2.webp"
+                        alt="Shrek 2"
                     >
                 </a>
 
-                <a href="#" class="pelicula">
+                <!-- 11. SOUTH PARK -->
+                <a href="/?pelicula=south-park" class="pelicula">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/posters/PosterSouthPark.jpg" alt="Película 11"
+                        src="/imagenes/posters/PosterSouthPark.jpg"
+                        alt="South Park"
                     >
                 </a>
 
@@ -131,11 +160,13 @@
 
     </main>
 
-    <script crossorigin
+    <script
+        crossorigin
         src="https://unpkg.com/react@18/umd/react.production.min.js">
     </script>
 
-    <script crossorigin
+    <script
+        crossorigin
         src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
     </script>
 

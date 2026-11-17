@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de usuario</title>
+
+    <link rel="stylesheet" href="../styles/tipografia.css">
     <link rel="stylesheet" href="../styles/perfil.css">
 </head>
 
@@ -14,8 +16,8 @@
     <main class="perfil">
 
         <header class="encabezado">
-            <a href="buscador.html" class="volver">
-                &#8592; Volver al inicio
+            <a href="/" class="btn-volver">
+                Volver al inicio
             </a>
         </header>
 
@@ -27,9 +29,9 @@
 
             <div class="contenedor-opciones">
 
-                <a href="#" class="opcion">
+                <a href="/?vista=favoritos" class="opcion">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/perfiles/Favoritos.jpeg"
+                        src="/imagenes/perfiles/Favoritos.jpeg"
                         alt="Favoritos"
                         class="imagen-opcion"
                     >
@@ -38,16 +40,16 @@
 
                 <a href="milista.html" class="opcion">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/perfiles/Lista.jpeg"
+                        src="/imagenes/perfiles/Lista.jpeg"
                         alt="Mi lista"
                         class="imagen-opcion"
                     >
                     <span>MI LISTA</span>
                 </a>
 
-                <a href="#" class="opcion">
+                <a href="/?vista=calificadas" class="opcion">
                     <img
-                        src="../../catalogoPeliculas/public/imagenes/perfiles/Reseñas.jpeg"
+                        src="/imagenes/perfiles/Reseñas.jpeg"
                         alt="Reseñas"
                         class="imagen-opcion"
                     >
@@ -60,8 +62,16 @@
 
     </main>
 
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script
+        crossorigin
+        src="https://unpkg.com/react@18/umd/react.production.min.js">
+    </script>
+
+    <script
+        crossorigin
+        src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+    </script>
+
     <script src="../components/perfil.js"></script>
 
 </body>
