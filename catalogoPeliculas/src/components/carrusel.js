@@ -2,47 +2,47 @@
 const generos = [
     {
         nombre: "THRILLER",
-        imagen: "../../public/imagenes/fondos/thrillerdif.jpg"
+        imagen: "/imagenes/fondos/thrillerdif.jpg"
     },
     {
         nombre: "ROMANCE",
-        imagen: "../../public/imagenes/fondos/romancedif.jpg"
+        imagen: "/imagenes/fondos/romancedif.jpg"
     },
     {
         nombre: "ANIMADA",
-        imagen: "../../public/imagenes/fondos/animadadif.jpg"
+        imagen: "/imagenes/fondos/animadadif.jpg"
     },
     {
         nombre: "COMEDIA",
-        imagen: "../../public/imagenes/fondos/comediadif.jpg"
+        imagen: "/imagenes/fondos/comediadif.jpg"
     },
     {
         nombre: "TERROR",
-        imagen: "../../public/imagenes/fondos/terrordif.jpg"
+        imagen: "/imagenes/fondos/terrordif.jpg"
     },
     {
         nombre: "ACCIÓN",
-        imagen: "../../public/imagenes/fondos/acciondif.jpg"
+        imagen: "/imagenes/fondos/acciondif.jpg"
     },
     {
         nombre: "SCI-FI",
-        imagen: "../../public/imagenes/fondos/scifidif.jpg"
+        imagen: "/imagenes/fondos/scifidif.jpg"
     },
     {
         nombre: "DRAMA",
-        imagen: "../../public/imagenes/fondos/dramadif.jpg"
+        imagen: "/imagenes/fondos/dramadif.jpg"
     },
     {
         nombre: "FANTASÍA",
-        imagen: "../../public/imagenes/fondos/fantasiadif.jpg"
+        imagen: "/imagenes/fondos/fantasiadif.jpg"
     },
     {
         nombre: "AVENTURA",
-        imagen: "../../public/imagenes/fondos/aventuradif.jpg"
+        imagen: "/imagenes/fondos/aventuradif.jpg"
     },
     {
         nombre: "CRIMEN",
-        imagen: "../../public/imagenes/fondos/crimendif.jpg"
+        imagen: "/imagenes/fondos/crimendif.jpg"
     }
 ];
 
@@ -104,24 +104,24 @@ function CarruselGeneros() {
                 },
 
                 generos.map((genero) =>
-React.createElement(
-    "a",
-    {
-        href: "/?genero=" + encodeURIComponent(
-            genero.nombre === "ANIMADA" ? "Animación" :
-            genero.nombre === "SCI-FI" ? "Ciencia ficción" :
-            genero.nombre.charAt(0) +
-            genero.nombre.slice(1).toLowerCase()
-        ),
-        className: "genero",
-        key: genero.nombre
-    },
+                    React.createElement(
+                        "a",
+                        {
+                            href: "/?genero=" + encodeURIComponent(
+                                genero.nombre === "ANIMADA" ? "Animación" :
+                                genero.nombre === "SCI-FI" ? "Ciencia ficción" :
+                                genero.nombre.charAt(0) +
+                                genero.nombre.slice(1).toLowerCase()
+                            ),
+                            className: "genero",
+                            key: genero.nombre
+                        },
 
                         React.createElement(
                             "img",
                             {
                                 src: genero.imagen,
-                                alt: ""
+                                alt: genero.nombre
                             }
                         ),
 
@@ -134,7 +134,6 @@ React.createElement(
                 )
             )
         ),
-
 
         React.createElement(
             "button",

@@ -1,0 +1,15 @@
+8188283 | jocelini | citlalitenaruiz@gmail.com | Merge remote-tracking branch 'origin/feat/catalogo-busqueda' into feat/catalogo-busqueda
+a329ee2 | jocelini | citlalitenaruiz@gmail.com | se agrego el archivo pelicula.js y milista.js se modifico para que se  pueda mostrar la pelicula seleccionada en el catalogo y se agregaron las fuentes tipograficas al proyecto
+56da7ac | jocelini | citlalitenaruiz@gmail.com | se agrego la pelicula de avatar al catalogo y se agregaron las fuentes  tipograficas al proyecto
+05f857f | jocelini | citlalitenaruiz@gmail.com | Merge branch 'feat/catalogo-busqueda' of https://github.com/karlo7rdtz/PrograWebPeliculas into feat/catalogo-busqueda
+0407b9b | karlo7rdtz | karlo.rdgzt20707@gmail.com | Creacion de formulariopara modificar perfil
+5633f1e | karlo7rdtz | karlo.rdgzt20707@gmail.com | Merge branch 'feat/catalogo-busqueda' of https://github.com/karlo7rdtz/PrograWebPeliculas into feat/catalogo-busqueda
+def7ee8 | karlo7rdtz | karlo.rdgzt20707@gmail.com | Modificacion del menu de generos para incorporar react, esperando fusion
+75ab04c | jocelini | citlalitenaruiz@gmail.com | Merge pull request #1 from karlo7rdtz/feat/perfil-colecciones
+4a6a7b3 | jocelini | citlalitenaruiz@gmail.com | corregi poster de peliculas y agregue una nueva pelicula a la lista
+e953e29 | jocelini | citlalitenaruiz@gmail.com | Corrigiendo errores en el catalogo de peliculas y agregando nuevas peliculas al catalogo.
+e83306d | jocelini | citlalitenaruiz@gmail.com | AGREGUE MAS FONDOS DE PELICULAS Y SERIES PARA EL CATALOGO DE PELICULAS
+dc499f5 | jocelini | citlalitenaruiz@gmail.com | Agrego el proyecto de catalogo de peliculas con busqueda y filtros, ademas de la estructura de carpetas y archivos iniciales.
+9afe77e | jocelini | citlalitenaruiz@gmail.com | Agregar archivos del proyecto de catalogo de peliculas, le di estilos tipograficos y añadi las imagenes de fondo y poster de las peliculas, ademas de la fuente tipografica.
+d143e1c | karlo7rdtz | karlo.rdgzt20707@gmail.com | Creacion apartado de busqueda, solo interfaz
+4277b2b | karlo7rdtz | karlo.rdgzt20707@gmail.com | Modificacion de directorios, y cambio de formato para que vaya acorde con la idea principal

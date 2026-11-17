@@ -1,6 +1,8 @@
+
 import { useEffect, useRef, useState } from "react";
 import { catalogo } from "../data/catalogo";
 import "../styles/inicio.css";
+import Favoritos from "./favoritos";
 
 const generos = [
   ["Todos", "Todos", "general"],
@@ -57,6 +59,7 @@ function leerCalificaciones() {
   );
 }
 
+// ICONOS DEL MENÚ
 function Icono({ nombre }) {
   const dibujos = {
     inicio: (
@@ -102,6 +105,7 @@ function Icono({ nombre }) {
   );
 }
 
+// IMÁGENES DEL CATÁLOGO
 function Imagen({ src, alt, className = "" }) {
   const [fallo, setFallo] = useState(false);
 
@@ -109,15 +113,15 @@ function Imagen({ src, alt, className = "" }) {
     setFallo(false);
   }, [src]);
 
- if (fallo || !src) {
-  return (
-    <span
-      className={`imagen-pendiente ${className}`}
-      role="img"
-      aria-label={alt}
-    />
-  );
-}
+  if (fallo || !src) {
+    return (
+      <span
+        className={`imagen-pendiente ${className}`}
+        role="img"
+        aria-label={alt}
+      />
+    );
+  }
 
   return (
     <img
@@ -131,6 +135,7 @@ function Imagen({ src, alt, className = "" }) {
   );
 }
 
+// CENTRAR TARJETAS DEL CARRUSEL
 function centrarTarjeta(carrusel, tarjeta, suave = true) {
   if (!carrusel || !tarjeta) return;
 
@@ -143,53 +148,46 @@ function centrarTarjeta(carrusel, tarjeta, suave = true) {
       tarjeta.offsetLeft +
       tarjeta.offsetWidth / 2 -
       carrusel.clientWidth / 2,
+
     behavior: suave && !reducirMovimiento ? "smooth" : "auto",
   });
 }
 
 export default function Inicio() {
-
-const [usuario, setUsuario] = useState(() => {
-  try {
-    return JSON.parse(localStorage.getItem("perfilUsuario")) || {};
-  } catch {
-    return {};
-  }
-});
-
-useEffect(() => {
-  function actualizarUsuario() {
+  // PERFIL Y FILTROS DEL CATÁLOGO
+  const [usuario, setUsuario] = useState(() => {
     try {
-      setUsuario(JSON.parse(localStorage.getItem("perfilUsuario")) || {});
+      return JSON.parse(localStorage.getItem("perfilUsuario")) || {};
     } catch {
-      setUsuario({});
+      return {};
     }
-  }
+  });
 
-  window.addEventListener("pageshow", actualizarUsuario);
-  window.addEventListener("storage", actualizarUsuario);
+  useEffect(() => {
+    function actualizarUsuario() {
+      try {
+        setUsuario(JSON.parse(localStorage.getItem("perfilUsuario")) || {});
+      } catch {
+        setUsuario({});
+      }
+    }
 
-  return () => {
-    window.removeEventListener("pageshow", actualizarUsuario);
-    window.removeEventListener("storage", actualizarUsuario);
-  };
-}, []);
+    window.addEventListener("pageshow", actualizarUsuario);
+    window.addEventListener("storage", actualizarUsuario);
+    return () => {
+      window.removeEventListener("pageshow", actualizarUsuario);
+      window.removeEventListener("storage", actualizarUsuario);
+    };
+  }, []);
 
-const parametros = new URLSearchParams(window.location.search);
-
-const [genero, setGenero] = useState(
-    parametros.get("genero") || "Todos"
-);
-
-const [tipo, setTipo] = useState("Todos");
-
-const [busqueda, setBusqueda] = useState(
-    parametros.get("busqueda") || ""
-);
+  const parametros = new URLSearchParams(window.location.search);
+  const [genero, setGenero] = useState(parametros.get("genero") || "Todos");
+  const [tipo, setTipo] = useState("Todos");
+  const [busqueda, setBusqueda] = useState(parametros.get("busqueda") || "");
   const [vista, setVista] = useState("inicio");
   const [seleccionado, setSeleccionado] = useState("shrek2");
 
-  // Colecciones personales.
+  // COLECCIONES PERSONALES
   const [favoritos, setFavoritos] = useState(() =>
     leerListaGuardada("peliculas-favoritas")
   );
@@ -198,18 +196,17 @@ const [busqueda, setBusqueda] = useState(
     leerListaGuardada("peliculas-mi-lista")
   );
 
-  const [calificaciones, setCalificaciones] = useState(
-    leerCalificaciones
-  );
+  const [calificaciones, setCalificaciones] =
+    useState(leerCalificaciones);
 
-  // Detalles y animación.
+  // DETALLES Y ANIMACIÓN
   const [detalle, setDetalle] = useState(() => {
-  const id = new URLSearchParams(window.location.search).get("pelicula");
-  return catalogo.find((contenido) => contenido.id === id) ?? null;
+    const id = new URLSearchParams(window.location.search).get("pelicula");
+    return catalogo.find((contenido) => contenido.id === id) ?? null;
   });
   const [animando, setAnimando] = useState(false);
 
-  // Referencias.
+  // REFERENCIAS
   const carruselRef = useRef(null);
   const buscadorRef = useRef(null);
   const dialogoRef = useRef(null);
@@ -219,7 +216,7 @@ const [busqueda, setBusqueda] = useState(
   const seleccionRef = useRef("shrek2");
   const bloqueoAperturaRef = useRef(false);
 
-  // Aplicar filtros.
+  // FILTRAR LAS PELÍCULAS DEL CATÁLOGO
   const visibles = catalogo.filter((contenido) => {
     const coincideGenero =
       genero === "Todos" || contenido.generos.includes(genero);
@@ -231,21 +228,7 @@ const [busqueda, setBusqueda] = useState(
       contenido.titulo
     ).includes(normalizar(busqueda.trim()));
 
-    const coincideVista =
-      vista === "favoritos"
-        ? favoritos.includes(contenido.id)
-        : vista === "lista"
-          ? miLista.includes(contenido.id)
-          : vista === "calificadas"
-            ? calificaciones[contenido.id] !== undefined
-            : true;
-
-    return (
-      coincideGenero &&
-      coincideTipo &&
-      coincideBusqueda &&
-      coincideVista
-    );
+    return coincideGenero && coincideTipo && coincideBusqueda;
   });
 
   const firmaVisibles = visibles
@@ -260,7 +243,7 @@ const [busqueda, setBusqueda] = useState(
     (contenido) => contenido.id === activa?.id
   );
 
-  // Guardar favoritos.
+  // GUARDAR FAVORITOS
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -268,12 +251,11 @@ const [busqueda, setBusqueda] = useState(
         JSON.stringify(favoritos)
       );
     } catch {
-      // Si el almacenamiento está bloqueado,
-      // los cambios funcionan durante la sesión.
+      // Los favoritos funcionan durante la sesión.
     }
   }, [favoritos]);
 
-  // Guardar Mi lista.
+  // GUARDAR MI LISTA
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -285,7 +267,7 @@ const [busqueda, setBusqueda] = useState(
     }
   }, [miLista]);
 
-  // Guardar calificaciones personales.
+  // GUARDAR CALIFICACIONES
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -297,10 +279,10 @@ const [busqueda, setBusqueda] = useState(
     }
   }, [calificaciones]);
 
-  // Centrar al cargar o al cambiar los resultados.
-  // No se ejecuta cada vez que cambia el cartel central.
+  // CENTRAR EL CARRUSEL
   useEffect(() => {
     const carrusel = carruselRef.current;
+
     if (!carrusel) return;
 
     const tarjetas = Array.from(
@@ -338,16 +320,16 @@ const [busqueda, setBusqueda] = useState(
       cancelAnimationFrame(cuadroRef.current);
       observador.disconnect();
     };
-  }, [firmaVisibles]);
+  }, [firmaVisibles, vista]);
 
-  // Abrir la ventana de detalles.
+  // ABRIR VENTANA DE DETALLES
   useEffect(() => {
     if (detalle && !dialogoRef.current?.open) {
       dialogoRef.current?.showModal();
     }
   }, [detalle]);
 
-  // Limpiar tareas pendientes al desmontar.
+  // LIMPIAR TAREAS PENDIENTES
   useEffect(() => {
     return () => {
       clearTimeout(temporizadorRef.current);
@@ -355,12 +337,13 @@ const [busqueda, setBusqueda] = useState(
     };
   }, []);
 
+  // REGISTRAR SELECCIÓN
   function registrarSeleccion(id) {
     seleccionRef.current = id;
     setSeleccionado(id);
   }
 
-  // Detectar qué cartel está más cerca del centro.
+  // DETECTAR EL CARTEL CENTRAL
   function detectarCentro() {
     cancelAnimationFrame(cuadroRef.current);
 
@@ -397,6 +380,7 @@ const [busqueda, setBusqueda] = useState(
     });
   }
 
+  // DESPLAZAR EL CARRUSEL
   function irAIndice(indice) {
     const carrusel = carruselRef.current;
     const tarjetas = carrusel?.querySelectorAll("[data-contenido]");
@@ -406,6 +390,7 @@ const [busqueda, setBusqueda] = useState(
     }
   }
 
+  // NAVEGACIÓN CON TECLADO
   function manejarTeclado(evento) {
     let destino;
 
@@ -442,6 +427,7 @@ const [busqueda, setBusqueda] = useState(
     tarjetas?.[indice]?.focus({ preventScroll: true });
   }
 
+  // CAMBIAR ENTRE PANTALLAS
   function cambiarVista(nuevaVista) {
     setVista(nuevaVista);
     setGenero("Todos");
@@ -449,6 +435,7 @@ const [busqueda, setBusqueda] = useState(
     setBusqueda("");
   }
 
+  // AGREGAR O QUITAR FAVORITOS
   function alternarFavorito(id) {
     setFavoritos((actuales) =>
       actuales.includes(id)
@@ -457,6 +444,7 @@ const [busqueda, setBusqueda] = useState(
     );
   }
 
+  // AGREGAR O QUITAR DE MI LISTA
   function alternarMiLista(id) {
     setMiLista((actuales) =>
       actuales.includes(id)
@@ -465,6 +453,7 @@ const [busqueda, setBusqueda] = useState(
     );
   }
 
+  // CALIFICAR PELÍCULA
   function calificarContenido(id, valor) {
     setCalificaciones((actuales) => {
       const siguientes = { ...actuales };
@@ -489,6 +478,7 @@ const [busqueda, setBusqueda] = useState(
     });
   }
 
+  // MOSTRAR DETALLES
   function abrirDetalle(contenido, boton) {
     if (bloqueoAperturaRef.current) return;
 
@@ -513,6 +503,7 @@ const [busqueda, setBusqueda] = useState(
     }, 650);
   }
 
+  // CERRAR DETALLES
   function cerrarDetalle() {
     dialogoRef.current?.close();
   }
@@ -527,32 +518,35 @@ const [busqueda, setBusqueda] = useState(
     }
   }
 
+  // INTERFAZ PRINCIPAL
   return (
     <div className="cine-app">
+
       {/* MENÚ LATERAL */}
       <aside className="cine-menu">
-<div
-  className="cine-usuario"
-  onClick={() => window.location.href = "/src/pages/perfil.html"}
-  role="button"
-  tabIndex={0}
-  onKeyDown={(evento) => {
-    if (evento.key === "Enter" || evento.key === " ") {
-      evento.preventDefault();
-      window.location.href = "/src/pages/perfil.html";
-    }
-  }}
->
-  <Imagen
-    src={usuario.foto || "/imagenes/perfiles/FotoPerfil.jpeg"}
-    alt="Foto de perfil"
-    className="cine-avatar"
-  />
-
-  <span>{usuario.nombre || "Usuario"}</span>
-</div>
+        <div
+          className="cine-usuario"
+          onClick={() => window.location.href = "/src/pages/perfil.html"}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(evento) => {
+            if (evento.key === "Enter" || evento.key === " ") {
+              evento.preventDefault();
+              window.location.href = "/src/pages/perfil.html";
+            }
+          }}
+        >
+          <Imagen
+            src={usuario.foto || "/imagenes/perfiles/FotoPerfil.jpeg"}
+            alt="Foto de perfil"
+            className="cine-avatar"
+          />
+          <span>{usuario.nombre || "Usuario"}</span>
+        </div>
 
         <nav aria-label="Navegación principal">
+
+          {/* INICIO */}
           <button
             type="button"
             className={vista === "inicio" ? "menu-activo" : ""}
@@ -561,27 +555,37 @@ const [busqueda, setBusqueda] = useState(
             <span className="cine-icono">
               <Icono nombre="inicio" />
             </span>
+
             Inicio
           </button>
 
-          <button type="button" onClick={() => window.location.href = "/src/pages/buscador.html"} >
-          <span className="cine-icono">
-            <Icono nombre="buscar" />
-          </span>
+          {/* BUSCAR */}
+          <button
+            type="button"
+            onClick={() => window.location.href = "/src/pages/buscador.html"}
+          >
+            <span className="cine-icono">
+              <Icono nombre="buscar" />
+            </span>
             Buscar
           </button>
 
+          {/* FAVORITOS */}
           <button
             type="button"
-            className={vista === "favoritos" ? "menu-activo" : ""}
+            className={
+              vista === "favoritos" ? "menu-activo" : ""
+            }
             onClick={() => cambiarVista("favoritos")}
           >
             <span className="cine-icono">
               <Icono nombre="corazon" />
             </span>
+
             Favoritos
           </button>
 
+          {/* MI LISTA */}
           <button
             type="button"
             className={vista === "lista" ? "menu-activo" : ""}
@@ -590,12 +594,16 @@ const [busqueda, setBusqueda] = useState(
             <span className="cine-icono">
               <Icono nombre="lista" />
             </span>
+
             Mi lista
           </button>
 
+          {/* MIS RESEÑAS */}
           <button
             type="button"
-            className={vista === "calificadas" ? "menu-activo" : ""}
+            className={
+              vista === "calificadas" ? "menu-activo" : ""
+            }
             onClick={() => cambiarVista("calificadas")}
           >
             <span
@@ -604,15 +612,19 @@ const [busqueda, setBusqueda] = useState(
             >
               ☆
             </span>
-            Calificadas
+
+            Mis reseñas
           </button>
+
         </nav>
       </aside>
 
       {/* CONTENIDO PRINCIPAL */}
       <main className="cine-principal">
+
+        {/* FONDO DE LA PELÍCULA */}
         <div className="fondo-escena" aria-hidden="true">
-          {activa && (
+          {vista === "inicio" && activa && (
             <img
               key={activa.id}
               src={activa.fondo}
@@ -624,6 +636,7 @@ const [busqueda, setBusqueda] = useState(
           )}
         </div>
 
+        {/* CLAQUETA DECORATIVA */}
         <div className="claqueta-fondo" aria-hidden="true">
           <div className="claqueta-brazo" />
           <div className="claqueta-base" />
@@ -631,252 +644,322 @@ const [busqueda, setBusqueda] = useState(
         </div>
 
         <div className="contenido-frontal">
-          <h1 className="solo-lectores">
-            Catálogo de películas y series
-          </h1>
 
-          {/* TIPOS Y BÚSQUEDA */}
-          <div className="cine-herramientas">
-            <div
-              className="cine-tipos"
-              aria-label="Tipo de contenido"
-            >
-              {["Todos", "Película", "Serie"].map((opcion) => (
-                <button
-                  type="button"
-                  key={opcion}
-                  aria-pressed={tipo === opcion}
-                  className={tipo === opcion ? "tipo-activo" : ""}
-                  onClick={() => setTipo(opcion)}
-                >
-                  {opcion === "Todos"
-                    ? "Todo"
-                    : opcion === "Película"
-                      ? "Películas"
-                      : "Series"}
-                </button>
-              ))}
-            </div>
-
-            <label className="cine-buscador">
-              <Icono nombre="buscar" />
-
-              <span className="solo-lectores">
-                Buscar por título
-              </span>
-
-              <input
-                ref={buscadorRef}
-                type="search"
-                placeholder="Buscar una historia..."
-                value={busqueda}
-                onChange={(evento) =>
-                  setBusqueda(evento.target.value)
-                }
-              />
-            </label>
-          </div>
-
-          {/* GÉNEROS */}
-          <div className="cinta-generos" aria-label="Géneros">
-            <div className="cinta-opciones">
-              {generos.map(([valor, etiqueta, fuente]) => (
-                <button
-                  key={valor}
-                  type="button"
-                  aria-pressed={genero === valor}
-                  className={`fuente-${fuente} ${
-                    genero === valor ? "genero-activo" : ""
-                  }`}
-                  onClick={() => setGenero(valor)}
-                >
-                  {etiqueta}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {vista !== "inicio" && (
-            <h2 className="titulo-coleccion">
-              {vista === "favoritos"
-                ? "Tus favoritos"
-                : vista === "lista"
-                  ? "Mi lista"
-                  : "Tus calificaciones"}
-            </h2>
-          )}
-
-          {activa ? (
+          {/* MOSTRAR CATÁLOGO O FAVORITOS */}
+          {vista === "inicio" ? (
             <>
-              {/* CARRUSEL */}
-              <section
-                className="escenario"
-                aria-label="Carrusel del catálogo"
-              >
-                <button
-                  type="button"
-                  className="flecha-carrusel flecha-izquierda"
-                  aria-label="Título anterior"
-                  disabled={indiceActivo <= 0}
-                  onClick={() => irAIndice(indiceActivo - 1)}
-                >
-                  <Icono nombre="flecha" />
-                </button>
+
+              {/* TÍTULO PRINCIPAL */}
+              <h1 className="solo-lectores">
+                Catálogo de películas y series
+              </h1>
+
+              {/* TIPOS Y BÚSQUEDA */}
+              <div className="cine-herramientas">
 
                 <div
-                  className="carrusel-cine"
-                  ref={carruselRef}
-                  onScroll={detectarCentro}
-                  onKeyDown={manejarTeclado}
+                  className="cine-tipos"
+                  aria-label="Tipo de contenido"
                 >
-                  {visibles.map((contenido, indice) => {
-                    const esActiva = activa.id === contenido.id;
-
-                    return (
-                      <button
-                        type="button"
-                        key={contenido.id}
-                        data-contenido={contenido.id}
-                        className={`posicion-cartel ${
-                          esActiva ? "posicion-activa" : ""
-                        }`}
-                        aria-pressed={esActiva}
-                        aria-label={
-                          esActiva
-                            ? `Ver detalles de ${contenido.titulo}`
-                            : `Centrar ${contenido.titulo}`
-                        }
-                        onClick={(evento) => {
-                          if (esActiva) {
-                            abrirDetalle(
-                              contenido,
-                              evento.currentTarget
-                            );
-                          } else {
-                            irAIndice(indice);
-                          }
-                        }}
-                      >
-                        <span className="cartel-visual">
-                          <Imagen
-                            src={contenido.poster}
-                            alt={contenido.titulo}
-                            className="cartel-imagen"
-                          />
-
-                          <span className="cartel-sombra" />
-
-                          <span className="cartel-textos">
-                            <strong>{contenido.titulo}</strong>
-                            <small>{contenido.generos[0]}</small>
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
+                  {["Todos", "Película", "Serie"].map((opcion) => (
+                    <button
+                      type="button"
+                      key={opcion}
+                      aria-pressed={tipo === opcion}
+                      className={
+                        tipo === opcion ? "tipo-activo" : ""
+                      }
+                      onClick={() => setTipo(opcion)}
+                    >
+                      {opcion === "Todos"
+                        ? "Todo"
+                        : opcion === "Película"
+                          ? "Películas"
+                          : "Series"}
+                    </button>
+                  ))}
                 </div>
 
-                <button
-                  type="button"
-                  className="flecha-carrusel flecha-derecha"
-                  aria-label="Siguiente título"
-                  disabled={indiceActivo >= visibles.length - 1}
-                  onClick={() => irAIndice(indiceActivo + 1)}
-                >
-                  <Icono nombre="flecha" />
-                </button>
-              </section>
+                <label className="cine-buscador">
+                  <Icono nombre="buscar" />
 
-              <div className="contador-cine">
-                <span>
-                  {String(indiceActivo + 1).padStart(2, "0")}
-                </span>
-                <span className="contador-linea" />
-                <span>{visibles.length}</span>
+                  <span className="solo-lectores">
+                    Buscar por título
+                  </span>
+
+                  <input
+                    ref={buscadorRef}
+                    type="search"
+                    placeholder="Buscar una historia..."
+                    value={busqueda}
+                    onChange={(evento) =>
+                      setBusqueda(evento.target.value)
+                    }
+                  />
+                </label>
+
               </div>
 
-              {/* SINOPSIS DEL CARTEL CENTRAL */}
-              <section
-                className="sinopsis-cine"
-                aria-live="polite"
+              {/* CINTA DE GÉNEROS */}
+              <div
+                className="cinta-generos"
+                aria-label="Géneros"
               >
-                <div
-                  className="separador-cine"
-                  aria-hidden="true"
-                >
-                  <span>▽</span>
+                <div className="cinta-opciones">
+                  {generos.map(([valor, etiqueta, fuente]) => (
+                    <button
+                      key={valor}
+                      type="button"
+                      aria-pressed={genero === valor}
+                      className={`fuente-${fuente} ${
+                        genero === valor ? "genero-activo" : ""
+                      }`}
+                      onClick={() => setGenero(valor)}
+                    >
+                      {etiqueta}
+                    </button>
+                  ))}
                 </div>
+              </div>
 
-                <div className="sinopsis-encabezado">
-                  <div>
-                    <p className="datos-cine">
-                      {activa.anio} / {activa.tipo}
-                    </p>
+              {/* CARRUSEL PRINCIPAL */}
+              {activa ? (
+                <>
 
-                    <h2>{activa.titulo}</h2>
+                  <section
+                    className="escenario"
+                    aria-label="Carrusel del catálogo"
+                  >
+
+                    {/* FLECHA IZQUIERDA */}
+                    <button
+                      type="button"
+                      className="flecha-carrusel flecha-izquierda"
+                      aria-label="Título anterior"
+                      disabled={indiceActivo <= 0}
+                      onClick={() =>
+                        irAIndice(indiceActivo - 1)
+                      }
+                    >
+                      <Icono nombre="flecha" />
+                    </button>
+
+                    {/* PELÍCULAS */}
+                    <div
+                      className="carrusel-cine"
+                      ref={carruselRef}
+                      onScroll={detectarCentro}
+                      onKeyDown={manejarTeclado}
+                    >
+                      {visibles.map((contenido, indice) => {
+                        const esActiva =
+                          activa.id === contenido.id;
+
+                        return (
+                          <button
+                            type="button"
+                            key={contenido.id}
+                            data-contenido={contenido.id}
+                            className={`posicion-cartel ${
+                              esActiva
+                                ? "posicion-activa"
+                                : ""
+                            }`}
+                            aria-pressed={esActiva}
+                            aria-label={
+                              esActiva
+                                ? `Ver detalles de ${contenido.titulo}`
+                                : `Centrar ${contenido.titulo}`
+                            }
+                            onClick={(evento) => {
+                              if (esActiva) {
+                                abrirDetalle(
+                                  contenido,
+                                  evento.currentTarget
+                                );
+                              } else {
+                                irAIndice(indice);
+                              }
+                            }}
+                          >
+
+                            <span className="cartel-visual">
+                              <Imagen
+                                src={contenido.poster}
+                                alt={contenido.titulo}
+                                className="cartel-imagen"
+                              />
+
+                              <span className="cartel-sombra" />
+
+                              <span className="cartel-textos">
+                                <strong>
+                                  {contenido.titulo}
+                                </strong>
+
+                                <small>
+                                  {contenido.generos[0]}
+                                </small>
+                              </span>
+                            </span>
+
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* FLECHA DERECHA */}
+                    <button
+                      type="button"
+                      className="flecha-carrusel flecha-derecha"
+                      aria-label="Siguiente título"
+                      disabled={
+                        indiceActivo >= visibles.length - 1
+                      }
+                      onClick={() =>
+                        irAIndice(indiceActivo + 1)
+                      }
+                    >
+                      <Icono nombre="flecha" />
+                    </button>
+
+                  </section>
+
+                  {/* CONTADOR DEL CARRUSEL */}
+                  <div className="contador-cine">
+                    <span>
+                      {String(indiceActivo + 1).padStart(2, "0")}
+                    </span>
+
+                    <span className="contador-linea" />
+
+                    <span>{visibles.length}</span>
                   </div>
 
-                  <button
-                    type="button"
-                    className={`boton-corazon ${
-                      favoritos.includes(activa.id)
-                        ? "es-favorito"
-                        : ""
-                    }`}
-                    aria-label={
-                      favoritos.includes(activa.id)
-                        ? "Quitar de favoritos"
-                        : "Agregar a favoritos"
-                    }
-                    aria-pressed={favoritos.includes(activa.id)}
-                    onClick={() => alternarFavorito(activa.id)}
+                  {/* SINOPSIS DE PELÍCULA */}
+                  <section
+                    className="sinopsis-cine"
+                    aria-live="polite"
                   >
-                    <Icono nombre="corazon" />
-                  </button>
-                </div>
 
-                <p className="sinopsis-texto">
-                  {activa.sinopsis}
-                </p>
+                    <div
+                      className="separador-cine"
+                      aria-hidden="true"
+                    >
+                      <span>▽</span>
+                    </div>
 
-                <button
-                  type="button"
-                  className="boton-detalles"
-                  onClick={(evento) =>
-                    abrirDetalle(activa, evento.currentTarget)
-                  }
+                    <div className="sinopsis-encabezado">
+
+                      <div>
+                        <p className="datos-cine">
+                          {activa.anio} / {activa.tipo}
+                        </p>
+
+                        <h2>{activa.titulo}</h2>
+                      </div>
+
+                      {/* GUARDAR FAVORITO */}
+                      <button
+                        type="button"
+                        className={`boton-corazon ${
+                          favoritos.includes(activa.id)
+                            ? "es-favorito"
+                            : ""
+                        }`}
+                        aria-label={
+                          favoritos.includes(activa.id)
+                            ? "Quitar de favoritos"
+                            : "Agregar a favoritos"
+                        }
+                        aria-pressed={
+                          favoritos.includes(activa.id)
+                        }
+                        onClick={() =>
+                          alternarFavorito(activa.id)
+                        }
+                      >
+                        <Icono nombre="corazon" />
+                      </button>
+
+                    </div>
+
+                    <p className="sinopsis-texto">
+                      {activa.sinopsis}
+                    </p>
+
+                    <button
+                      type="button"
+                      className="boton-detalles"
+                      onClick={(evento) =>
+                        abrirDetalle(
+                          activa,
+                          evento.currentTarget
+                        )
+                      }
+                    >
+                      Ver detalles
+
+                      <span aria-hidden="true">
+                        ↗
+                      </span>
+                    </button>
+
+                  </section>
+                </>
+              ) : (
+
+                /* SIN RESULTADOS */
+                <section
+                  className="cine-vacio"
+                  role="status"
                 >
-                  Ver detalles
-                  <span aria-hidden="true">↗</span>
-                </button>
-              </section>
-            </>
-          ) : (
-            <section className="cine-vacio" role="status">
-              <h2>No hay títulos para mostrar</h2>
+                  <h2>No hay títulos para mostrar</h2>
 
-              <p>
-                {vista === "favoritos"
-                  ? "Agrega favoritos o cambia los filtros."
-                  : vista === "lista"
-                    ? "Añade películas o series a Mi lista desde sus detalles, o cambia los filtros."
-                    : vista === "calificadas"
-                      ? "Califica una película o serie para encontrarla aquí, o cambia los filtros."
-                      : "Prueba con otra búsqueda o cambia los filtros."}
-              </p>
-            </section>
+                  <p>
+                    Prueba con otra búsqueda o cambia los filtros.
+                  </p>
+                </section>
+
+              )}
+
+            </>
+
+          ) : (
+
+            /* INTERFAZ DE FAVORITOS, MI LISTA Y RESEÑAS */
+            <Favoritos
+              vista={vista}
+              favoritos={favoritos}
+              miLista={miLista}
+              calificaciones={calificaciones}
+              alCambiarVista={cambiarVista}
+              alFavorito={alternarFavorito}
+              alMiLista={alternarMiLista}
+              alCalificar={calificarContenido}
+              alVerDetalles={abrirDetalle}
+            />
+
           )}
+
         </div>
+
       </main>
 
-      {/* CLAQUETA ANIMADA */}
+      {/* ANIMACIÓN DE CLAQUETA */}
       {animando && (
-        <div className="transicion-cine" role="status">
+        <div
+          className="transicion-cine"
+          role="status"
+        >
           <span className="solo-lectores">
             Abriendo detalles
           </span>
 
-          <div className="mini-claqueta" aria-hidden="true">
+          <div
+            className="mini-claqueta"
+            aria-hidden="true"
+          >
             <div className="mini-brazo" />
 
             <div className="mini-cuerpo">
@@ -894,6 +977,7 @@ const [busqueda, setBusqueda] = useState(
         onClose={alCerrarDetalle}
         aria-labelledby="detalle-titulo"
       >
+
         {detalle && (
           <article
             className="detalle-contenido"
@@ -903,6 +987,8 @@ const [busqueda, setBusqueda] = useState(
                 `url("${detalle.fondo}")`,
             }}
           >
+
+            {/* BOTÓN CERRAR */}
             <button
               type="button"
               className="cerrar-detalle"
@@ -913,21 +999,28 @@ const [busqueda, setBusqueda] = useState(
               ×
             </button>
 
+            {/* INFORMACIÓN */}
             <div className="detalle-informacion">
+
               <p className="datos-cine">
                 {detalle.anio} / {detalle.tipo}
               </p>
 
-              <h2 id="detalle-titulo">{detalle.titulo}</h2>
+              <h2 id="detalle-titulo">
+                {detalle.titulo}
+              </h2>
 
               <div className="detalle-generos">
                 {detalle.generos.map((nombre) => (
-                  <span key={nombre}>{nombre}</span>
+                  <span key={nombre}>
+                    {nombre}
+                  </span>
                 ))}
               </div>
 
-              {/* BOTONES DE ACCIÓN */}
+              {/* ACCIONES */}
               <div className="acciones-detalle">
+
                 <button
                   type="button"
                   className="accion-detalle"
@@ -962,6 +1055,7 @@ const [busqueda, setBusqueda] = useState(
                   <span>Desde el inicio</span>
                 </button>
 
+                {/* AGREGAR A FAVORITOS */}
                 <button
                   type="button"
                   className={`accion-detalle ${
@@ -969,13 +1063,17 @@ const [busqueda, setBusqueda] = useState(
                       ? "accion-marcada"
                       : ""
                   }`}
-                  aria-pressed={favoritos.includes(detalle.id)}
+                  aria-pressed={
+                    favoritos.includes(detalle.id)
+                  }
                   aria-label={
                     favoritos.includes(detalle.id)
                       ? "Quitar de favoritos"
                       : "Añadir a favoritos"
                   }
-                  onClick={() => alternarFavorito(detalle.id)}
+                  onClick={() =>
+                    alternarFavorito(detalle.id)
+                  }
                 >
                   <span className="accion-circulo">
                     <Icono nombre="corazon" />
@@ -988,6 +1086,7 @@ const [busqueda, setBusqueda] = useState(
                   </span>
                 </button>
 
+                {/* AGREGAR A MI LISTA */}
                 <button
                   type="button"
                   className={`accion-detalle ${
@@ -995,13 +1094,17 @@ const [busqueda, setBusqueda] = useState(
                       ? "accion-marcada"
                       : ""
                   }`}
-                  aria-pressed={miLista.includes(detalle.id)}
+                  aria-pressed={
+                    miLista.includes(detalle.id)
+                  }
                   aria-label={
                     miLista.includes(detalle.id)
                       ? "Quitar de Mi lista"
                       : "Añadir a Mi lista"
                   }
-                  onClick={() => alternarMiLista(detalle.id)}
+                  onClick={() =>
+                    alternarMiLista(detalle.id)
+                  }
                 >
                   <span
                     className="accion-circulo"
@@ -1016,23 +1119,31 @@ const [busqueda, setBusqueda] = useState(
                       : "Añadir a lista"}
                   </span>
                 </button>
+
               </div>
 
+              {/* SINOPSIS */}
               <p className="detalle-sinopsis">
                 {detalle.sinopsis}
               </p>
 
               {/* CALIFICACIÓN PERSONAL */}
               <div className="panel-calificar">
+
                 <label htmlFor="puntuacion-personal">
                   Calificar esta{" "}
-                  {detalle.tipo === "Serie" ? "serie" : "película"}
+                  {detalle.tipo === "Serie"
+                    ? "serie"
+                    : "película"}
                 </label>
 
                 <div className="fila-calificar">
+
                   <select
                     id="puntuacion-personal"
-                    value={calificaciones[detalle.id] ?? ""}
+                    value={
+                      calificaciones[detalle.id] ?? ""
+                    }
                     onChange={(evento) =>
                       calificarContenido(
                         detalle.id,
@@ -1040,7 +1151,9 @@ const [busqueda, setBusqueda] = useState(
                       )
                     }
                   >
-                    <option value="">Sin calificar</option>
+                    <option value="">
+                      Sin calificar
+                    </option>
 
                     {Array.from(
                       { length: 10 },
@@ -1063,16 +1176,20 @@ const [busqueda, setBusqueda] = useState(
                       ? `Tu calificación: ${calificaciones[detalle.id]}/10`
                       : "Elige tu puntuación"}
                   </span>
+
                 </div>
 
                 <small>
                   Se guarda automáticamente en este navegador.
                 </small>
+
               </div>
+
             </div>
 
-            {/* CALIFICACIÓN GENERAL Y CARTEL */}
+            {/* CALIFICACIÓN GENERAL Y PÓSTER */}
             <aside className="detalle-columna">
+
               <div className="calificacion-general">
                 <h3>Calificación general</h3>
 
@@ -1095,7 +1212,9 @@ const [busqueda, setBusqueda] = useState(
                 </div>
 
                 {detalle.fuenteCalificacion && (
-                  <small>{detalle.fuenteCalificacion}</small>
+                  <small>
+                    {detalle.fuenteCalificacion}
+                  </small>
                 )}
               </div>
 
@@ -1104,10 +1223,14 @@ const [busqueda, setBusqueda] = useState(
                 alt={`Cartel de ${detalle.titulo}`}
                 className="detalle-poster"
               />
+
             </aside>
+
           </article>
         )}
+
       </dialog>
+
     </div>
   );
 }
