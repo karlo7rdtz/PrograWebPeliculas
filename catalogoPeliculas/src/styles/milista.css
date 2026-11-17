@@ -1,0 +1,491 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: #1a1028;
+    color: #e8d6ba;
+    font-family: Arial, sans-serif;
+}
+
+button, textarea, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.encabezado-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 25px 7%;
+    background: #241135;
+}
+
+.volver-lista {
+    border: 2px solid #e8d6ba;
+    padding: 12px 25px;
+    border-radius: 30px;
+    color: #e8d6ba;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.volver-lista:hover {
+    background: #e8d6ba;
+    color: #241135;
+}
+
+.logo-lista {
+    color: #e8d6ba;
+    font-weight: bold;
+    font-size: 19px;
+    letter-spacing: 2px;
+    text-decoration: none;
+}
+
+.portada-lista {
+    padding: 65px 8%;
+    background: linear-gradient(
+        120deg,
+        #4a3558,
+        #241135,
+        #100b1b
+    );
+}
+
+.etiqueta-lista {
+    color: #d8c9b3;
+    letter-spacing: 4px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.portada-lista h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(45px, 6vw, 75px);
+    color: white;
+    margin-bottom: 15px;
+}
+
+.descripcion-lista {
+    color: #d8c9b3;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.contenido-lista {
+    padding: 50px 8% 80px;
+    max-width: 1700px;
+    margin: auto;
+}
+
+.barra-lista {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.barra-lista h2 {
+    font-family: Georgia, serif;
+    font-size: 29px;
+}
+
+.contador-lista {
+    color: #bda7c7;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.filtros-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filtro {
+    padding: 11px 20px;
+    background: transparent;
+    border: 1px solid #9275a4;
+    border-radius: 25px;
+    color: #e8d6ba;
+    transition: 0.3s;
+}
+
+.filtro:hover,
+.filtro.activo {
+    background: #b18bbd;
+    border-color: #b18bbd;
+    color: #241135;
+}
+
+.area-carrusel {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.carrusel-lista {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: 20px;
+    padding: 20px 8px 30px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.carrusel-lista::-webkit-scrollbar {
+    display: none;
+}
+
+.tarjeta-pelicula {
+    position: relative;
+    flex: 0 0 calc((100% - 60px) / 4);
+    aspect-ratio: 2 / 3;
+    min-width: 0;
+    min-height: 310px;
+    border-radius: 17px;
+    border: 2px solid #6b5576;
+    overflow: hidden;
+    background: #34223e;
+    scroll-snap-align: start;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.tarjeta-pelicula:hover,
+.tarjeta-pelicula:focus-within {
+    transform: scale(1.05);
+    border-color: #e8d6ba;
+    z-index: 2;
+}
+
+.portada-pelicula {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        145deg,
+        var(--color-poster),
+        #1a1028
+    );
+}
+
+.emoji-pelicula {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 90px;
+}
+
+.imagen-pelicula {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tipo-pelicula {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 7px 12px;
+    background: rgba(20, 12, 30, 0.8);
+    border-radius: 20px;
+    font-size: 12px;
+    color: white;
+}
+
+.nombre-pelicula {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 60px 15px 20px;
+    background: linear-gradient(
+        transparent,
+        rgba(15, 8, 24, 0.95)
+    );
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 22px;
+    text-align: center;
+}
+
+.capa-pelicula {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(15, 8, 24, 0.98),
+        rgba(25, 12, 38, 0.88),
+        rgba(25, 12, 38, 0.35)
+    );
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.tarjeta-pelicula:hover .capa-pelicula,
+.tarjeta-pelicula:focus-within .capa-pelicula {
+    opacity: 1;
+    visibility: visible;
+}
+
+.capa-pelicula h3 {
+    font-family: Georgia, serif;
+    color: white;
+    font-size: 22px;
+}
+
+.capa-pelicula p {
+    font-size: 13px;
+    color: #d8c9b3;
+}
+
+.acciones-pelicula {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.accion {
+    padding: 10px 7px;
+    border-radius: 9px;
+    border: 1px solid #b18bbd;
+    background: rgba(40, 22, 55, 0.95);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.accion:hover {
+    background: #b18bbd;
+    color: #241135;
+}
+
+.accion.principal {
+    background: #e8d6ba;
+    border-color: #e8d6ba;
+    color: #241135;
+}
+
+.flecha-carrusel {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid #b18bbd;
+    background: #34223e;
+    color: #e8d6ba;
+    font-size: 28px;
+    transition: 0.3s;
+}
+
+.flecha-carrusel:hover {
+    background: #b18bbd;
+    color: #241135;
+}
+
+.lista-vacia {
+    width: 100%;
+    padding: 75px 25px;
+    background: #34223e;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.lista-vacia h3 {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.lista-vacia p {
+    color: #d8c9b3;
+    line-height: 1.5;
+}
+
+.ir-catalogo {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 12px 25px;
+    border-radius: 25px;
+    background: #b18bbd;
+    color: #241135;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.fondo-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-lista {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    border: 2px solid #a78bb7;
+    border-radius: 18px;
+    background: #30203e;
+}
+
+.modal-lista h2 {
+    font-family: Georgia, serif;
+    font-size: 27px;
+    margin-bottom: 15px;
+}
+
+.modal-lista p {
+    line-height: 1.6;
+    color: #d8c9b3;
+    margin-bottom: 18px;
+}
+
+.campo-resena {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 18px;
+}
+
+.campo-resena select,
+.campo-resena textarea {
+    background: #21142e;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: 1px solid #9275a4;
+    border-radius: 9px;
+}
+
+.campo-resena textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.botones-modal {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.botones-modal button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 25px;
+    border: 1px solid #b18bbd;
+    background: #b18bbd;
+    color: #241135;
+    font-weight: bold;
+}
+
+.botones-modal button.cancelar {
+    background: transparent;
+    color: #e8d6ba;
+}
+
+@media (max-width: 1100px) {
+    .tarjeta-pelicula {
+        flex-basis: calc((100% - 40px) / 3);
+    }
+}
+
+@media (max-width: 750px) {
+    .encabezado-lista {
+        padding: 20px;
+    }
+
+    .volver-lista {
+        font-size: 12px;
+        padding: 10px 13px;
+    }
+
+    .logo-lista {
+        font-size: 14px;
+    }
+
+    .portada-lista {
+        padding: 45px 20px;
+    }
+
+    .contenido-lista {
+        padding: 35px 20px;
+    }
+
+    .area-carrusel {
+        gap: 6px;
+    }
+
+    .carrusel-lista {
+        gap: 12px;
+    }
+
+    .tarjeta-pelicula {
+        flex-basis: calc((100% - 12px) / 2);
+        min-height: 260px;
+    }
+
+    .flecha-carrusel {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+    }
+
+    .capa-pelicula {
+        opacity: 1;
+        visibility: visible;
+        inset: auto 0 0;
+        padding: 12px;
+    }
+
+    .capa-pelicula h3 {
+        font-size: 17px;
+    }
+
+    .accion {
+        font-size: 11px;
+        padding: 9px 5px;
+    }
+}
+
+@media (max-width: 430px) {
+    .tarjeta-pelicula {
+        flex-basis: 85%;
+    }
+}

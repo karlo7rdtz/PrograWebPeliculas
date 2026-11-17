@@ -1,0 +1,658 @@
+
+/* PÁGINA DE FAVORITOS */
+
+.fav-pagina {
+  color: #fff6dc;
+  padding: 8px 0 80px;
+  min-height: 70vh;
+}
+
+.fav-pagina button,
+.fav-pagina input,
+.fav-pagina select,
+.fav-pagina textarea {
+  font: inherit;
+}
+
+/* ENCABEZADO */
+
+.fav-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+  padding: 32px 36px;
+  border: 1px solid #876d94;
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at 90% 15%,
+      #76538365,
+      transparent 42%
+    ),
+    linear-gradient(
+      130deg,
+      #392646,
+      #24172f 76%
+    );
+  box-shadow: 0 20px 55px #09050e45;
+}
+
+.fav-sobre,
+.fav-seccion-titulo p,
+.fav-ultimas-cabecera p {
+  margin: 0 0 12px;
+  color: #dbc58f;
+  letter-spacing: 3px;
+  font-size: 11px;
+}
+
+.fav-encabezado h1 {
+  margin: 0 0 10px;
+  font-family: "Longreach", Georgia, serif;
+  font-size: clamp(40px, 5.5vw, 76px);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.fav-encabezado h1 span {
+  color: #edb2ca;
+}
+
+.fav-encabezado > div:first-child > p:last-child {
+  color: #d8c9de;
+  font-size: 16px;
+}
+
+/* CONTADOR */
+
+.fav-contador {
+  flex: 0 0 135px;
+  height: 135px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid #d3bd88;
+  border-radius: 50%;
+  background: #25172fc4;
+}
+
+.fav-contador strong {
+  font-size: 44px;
+  font-weight: 400;
+}
+
+.fav-contador span {
+  font-size: 11px;
+  color: #dbcee2;
+  text-align: center;
+}
+
+/* PESTAÑAS */
+
+.fav-pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 28px 0 26px;
+  padding-bottom: 17px;
+  border-bottom: 1px solid #796387;
+}
+
+.fav-pestanas button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border: 1px solid #7d628a;
+  border-radius: 30px;
+  background: #372440;
+  color: #eadbef;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.fav-pestanas button:hover {
+  transform: translateY(-2px);
+  background: #53345e;
+}
+
+.fav-pestanas button.seleccionada {
+  background: #f3dfb8;
+  color: #2c1b39;
+  border-color: #f3dfb8;
+}
+
+.fav-pestanas span {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* BUSCADOR Y FILTROS */
+
+.fav-herramientas {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.fav-filtros {
+  display: flex;
+  gap: 16px;
+}
+
+.fav-filtros button {
+  padding: 10px 5px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #cbbdd4;
+}
+
+.fav-filtros button.activo {
+  color: #fff6dc;
+  border-color: #e4c88c;
+}
+
+.fav-herramientas input {
+  width: min(340px, 100%);
+  padding: 12px 17px;
+  border: 1px solid #81648e;
+  border-radius: 26px;
+  outline: none;
+  background: #251830;
+  color: #fff6dc;
+}
+
+.fav-herramientas input:focus {
+  border-color: #e4c88c;
+}
+
+.fav-herramientas input::placeholder {
+  color: #bcaac7;
+}
+
+/* TÍTULOS */
+
+.fav-seccion-titulo,
+.fav-ultimas-cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 40px 0 18px;
+}
+
+.fav-seccion-titulo h2,
+.fav-ultimas-cabecera h2 {
+  margin: 0;
+  font-family: "Lokeya", Georgia, serif;
+  font-size: clamp(25px, 3.2vw, 38px);
+  font-weight: 400;
+}
+
+.fav-seccion-titulo > span {
+  color: #bfaacb;
+  font-size: 13px;
+}
+
+/* CARRUSEL */
+
+.fav-carrusel-bloque {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.fav-flecha {
+  flex: 0 0 38px;
+  height: 52px;
+  border: 1px solid #a486b2;
+  border-radius: 25px;
+  background: #291a35;
+  color: #fff6dc;
+}
+
+.fav-flecha:hover {
+  background: #4b3159;
+}
+
+.fav-carrusel {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  min-width: 0;
+  width: 100%;
+  padding: 18px 10px 30px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-color: #846a92 #281a34;
+}
+
+.fav-resenas-lista {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+/* TARJETAS */
+
+.fav-tarjeta {
+  flex: 0 0 238px;
+  min-width: 0;
+  scroll-snap-align: start;
+  overflow: hidden;
+  border: 1px solid #6e557b;
+  border-radius: 16px;
+  background: #2b1c38;
+  box-shadow: 0 12px 28px #09050d35;
+  transition:
+    transform 0.24s,
+    border-color 0.24s,
+    box-shadow 0.24s;
+}
+
+.fav-tarjeta:hover,
+.fav-tarjeta:focus-within {
+  transform: translateY(-5px) scale(1.02);
+  border-color: #d2b98e;
+  box-shadow: 0 20px 40px #09050d83;
+}
+
+.fav-resenas-lista .fav-tarjeta {
+  width: 100%;
+}
+
+/* PÓSTER */
+
+.fav-imagen-contenedor {
+  position: relative;
+  height: 298px;
+  background: #43304e;
+}
+
+.fav-imagen-contenedor > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fav-imagen-contenedor::after {
+  content: "";
+  position: absolute;
+  inset: 40% 0 0;
+  background:
+    linear-gradient(
+      transparent,
+      #160e20ea
+    );
+  pointer-events: none;
+}
+
+/* BOTÓN DE CORAZÓN */
+
+.fav-corazon {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #c5a5d3;
+  border-radius: 50%;
+  background: #21152fdc;
+  color: #fff6dc;
+  font-size: 24px !important;
+}
+
+.fav-corazon.marcado {
+  color: #efafc9;
+}
+
+/* BOTONES QUE APARECEN SOBRE EL PÓSTER */
+
+.fav-acciones {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.fav-tarjeta:hover .fav-acciones,
+.fav-tarjeta:focus-within .fav-acciones {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fav-acciones button {
+  padding: 9px;
+  border: 1px solid #e6d5aa;
+  border-radius: 8px;
+  background: #26182eed;
+  color: #fff6dc;
+  font-size: 12px;
+}
+
+.fav-acciones button:hover {
+  background: #f1ddb4;
+  color: #241531;
+}
+
+/* DATOS DE LA PELÍCULA */
+
+.fav-datos {
+  padding: 17px;
+}
+
+.fav-meta {
+  margin: 0 0 7px;
+  color: #d4c191;
+  font-size: 12px;
+}
+
+.fav-datos h3 {
+  margin: 0 0 7px;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.fav-genero {
+  margin: 0 0 15px;
+  min-height: 30px;
+  color: #cabbd3;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.fav-fila-opciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.fav-fila-opciones > button {
+  padding: 9px 10px;
+  border: 1px solid #ad91bb;
+  border-radius: 8px;
+  background: #392648;
+  color: #fff6dc;
+  font-size: 12px;
+}
+
+.fav-fila-opciones label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #d4c5db;
+  font-size: 12px;
+}
+
+.fav-fila-opciones select {
+  max-width: 70px;
+  padding: 6px;
+  border: 1px solid #977aa5;
+  border-radius: 7px;
+  background: #25172d;
+  color: #fff6dc;
+}
+
+/* RESEÑAS GUARDADAS */
+
+.fav-resena-guardada {
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid #685373;
+}
+
+.fav-resena-guardada span {
+  color: #dbc58f;
+  font-size: 11px;
+}
+
+.fav-resena-guardada p {
+  color: #e4d6e9;
+  line-height: 1.5;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.fav-resena-guardada button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f0adc9;
+  font-size: 12px;
+}
+
+/* EDITOR DE RESEÑAS */
+
+.fav-editor {
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid #685373;
+}
+
+.fav-editor > label {
+  display: block;
+  margin-bottom: 7px;
+  color: #e6d5b4;
+  font-size: 13px;
+}
+
+.fav-editor textarea {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  resize: vertical;
+  border: 1px solid #9978a6;
+  border-radius: 8px;
+  background: #1d1229;
+  color: #fff6dc;
+  font-size: 13px;
+}
+
+.fav-editor-acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.fav-editor-acciones button {
+  flex: 1;
+  padding: 9px;
+  border: 1px solid #bd9cbe;
+  border-radius: 7px;
+  background: #412b50;
+  color: #fff6dc;
+  font-size: 12px;
+}
+
+.fav-editor-acciones button:first-child {
+  background: #e7d3aa;
+  color: #23172e;
+}
+
+.fav-error {
+  color: #ffc2c2;
+  font-size: 12px;
+}
+
+.fav-mensaje {
+  padding: 12px 16px;
+  border-left: 3px solid #e7d3aa;
+  background: #372440;
+  color: #fff6dc;
+}
+
+/* CUANDO NO HAY PELÍCULAS */
+
+.fav-vacio {
+  padding: 65px 20px;
+  border: 1px dashed #806b8b;
+  border-radius: 18px;
+  text-align: center;
+  background: #281b33b8;
+}
+
+.fav-vacio > span {
+  color: #d4a2bd;
+  font-size: 74px;
+}
+
+.fav-vacio h3 {
+  font-size: 23px;
+}
+
+.fav-vacio p {
+  color: #cdbdd5;
+}
+
+.fav-vacio button {
+  margin-top: 12px;
+  padding: 12px 20px;
+  border: 1px solid #e0c894;
+  border-radius: 8px;
+  background: #dfca9c;
+  color: #281a34;
+}
+
+/* ÚLTIMAS RESEÑAS */
+
+.fav-ultimas {
+  margin-top: 55px;
+  padding-top: 4px;
+  border-top: 1px solid #776084;
+}
+
+.fav-ultimas-cabecera button {
+  border: 0;
+  background: transparent;
+  color: #e7d3aa;
+}
+
+.fav-ultimas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.fav-ultimas-grid article {
+  padding: 19px;
+  border: 1px solid #745c80;
+  border-radius: 12px;
+  background: #32223d;
+}
+
+.fav-ultimas-grid strong {
+  display: block;
+  font-size: 16px;
+}
+
+.fav-ultimas-grid span {
+  display: inline-block;
+  margin-top: 8px;
+  color: #e5c98d;
+  font-size: 12px;
+}
+
+.fav-ultimas-grid p {
+  color: #e1d4e7;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.fav-sin-resenas {
+  color: #cdbdd5;
+  padding: 20px 0;
+}
+
+/* ADAPTACIÓN A PANTALLAS PEQUEÑAS */
+
+@media (max-width: 760px) {
+  .fav-encabezado {
+    padding: 24px;
+  }
+
+  .fav-contador {
+    flex-basis: 100px;
+    height: 100px;
+  }
+
+  .fav-contador strong {
+    font-size: 30px;
+  }
+
+  .fav-ultimas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fav-pestanas button {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 540px) {
+  .fav-encabezado {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .fav-pestanas {
+    gap: 7px;
+  }
+
+  .fav-herramientas input {
+    width: 100%;
+  }
+
+  .fav-flecha {
+    flex-basis: 28px;
+    width: 28px;
+  }
+
+  .fav-carrusel {
+    gap: 12px;
+    padding-inline: 3px;
+  }
+
+  .fav-tarjeta {
+    flex-basis: 215px;
+  }
+
+  .fav-acciones {
+    opacity: 1;
+    transform: none;
+  }
+
+  .fav-seccion-titulo {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fav-tarjeta,
+  .fav-acciones,
+  .fav-pestanas button {
+    transition: none;
+  }
+}

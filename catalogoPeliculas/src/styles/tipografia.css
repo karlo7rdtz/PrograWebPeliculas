@@ -1,0 +1,85 @@
+@font-face {
+  font-family: "Lokeya";
+  src: url("../../public/fuentes/Lokeya.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Typographica";
+  src: url("../../public/fuentes/typographica.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Longreach";
+  src: url("../../public/fuentes/longreach.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Shlop";
+  src: url("../../public/fuentes/shlop.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Leander";
+  src: url("../../public/fuentes/Leander.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "HeartBreath";
+  src: url("../../public/fuentes/HeartBreath.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MatchaWorld";
+  src: url("../../public/fuentes/MatchaWorld.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LesFlos";
+  src: url("../../public/fuentes/lesflos.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Computerfont";
+  src: url("../../public/fuentes/Computerfont.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Travax";
+  src: url("../../public/fuentes/travax.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-titulo: "Longreach", sans-serif;
+  --font-subtitulo: "Lokeya", sans-serif;
+  --font-texto: "Typographica", Arial, sans-serif;
+}

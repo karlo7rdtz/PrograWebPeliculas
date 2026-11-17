@@ -1,0 +1,40 @@
+@import "./styles/tipografia.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: #1b1228;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-texto);
+}
+
+h1 {
+  font-family: var(--font-titulo);
+}
+
+h2,
+h3 {
+  font-family: var(--font-subtitulo);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-texto);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+body:has(dialog[open]) {
+  overflow: hidden;
+}
