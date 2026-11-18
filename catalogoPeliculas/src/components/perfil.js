@@ -352,11 +352,6 @@ function Perfil() {
                     className: "foto-perfil"
                 }),
 
-                e(
-                    "span",
-                    { className: "placa-foto" },
-                    "ESPECTADOR PRINCIPAL"
-                )
             ),
 
             e("div", {
@@ -476,17 +471,7 @@ function Perfil() {
                     { className: "escenario-rueda" },
 
                     e("div", {
-                        className: "cinta-cine",
-                        "aria-hidden": true
-                    }),
-
-                    e("div", {
                         className: "rueda-fondo",
-                        "aria-hidden": true
-                    }),
-
-                    e("div", {
-                        className: "rueda-fondo-interior",
                         "aria-hidden": true
                     }),
 

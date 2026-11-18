@@ -465,113 +465,62 @@ input {
     overflow: hidden;
 }
 
-.cinta-cine {
-    position: absolute;
-    z-index: -1;
-    left: -12%;
-    bottom: 35px;
-    width: 124%;
-    height: 300px;
-    border: 24px solid rgba(212, 145, 138, 0.30);
-    border-radius: 50% 50% 0 0;
-    transform: rotate(-2deg);
-    box-shadow:
-        0 0 25px rgba(212, 145, 138, 0.15);
-}
-
-.cinta-cine::before {
-    content: "";
-    position: absolute;
-    inset: -20px 0;
-    border-top: 8px dashed #29142f;
-    border-bottom: 8px dashed #29142f;
-    border-radius: 50% 50% 0 0;
-    opacity: 0.8;
-}
-
 .rueda-fondo {
     position: absolute;
     z-index: -1;
-
     left: 50%;
     bottom: -520px;
-
     transform: translateX(-50%);
-
     width: 940px;
     height: 940px;
-
     border-radius: 50%;
-
-    border: 55px solid rgba(200, 142, 121, 0.42);
-
-    background:
-        radial-gradient(
-            circle,
-            #25142f 0 20%,
-            transparent 21% 35%,
-            rgba(229, 172, 133, 0.24) 36% 42%,
-            transparent 43%
-        );
-
-    box-shadow:
-        0 0 40px rgba(214, 130, 134, 0.28);
+    border: 55px solid rgba(200, 142, 121, 0.35);
+    background: transparent;
+    box-shadow: 0 0 30px rgba(214, 130, 134, 0.18);
 }
 
-.rueda-fondo-interior {
+.rueda-fondo::after {
+    content: "";
     position: absolute;
-    z-index: -1;
-
     left: 50%;
-    bottom: -445px;
-
-    transform: translateX(-50%);
-
-    width: 700px;
-    height: 700px;
-
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 420px;
     border-radius: 50%;
-    border: 35px solid rgba(235, 186, 139, 0.26);
+    border: 35px solid rgba(235, 186, 139, 0.22);
+    background: transparent;
 }
 
 .rueda-tarjeta {
     position: absolute;
     top: 95px;
     left: 50%;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     width: 32%;
     max-width: 390px;
     height: 395px;
-
     padding: 35px 20px 25px;
-
     border: 2px solid #b17cac;
     border-radius: 30px;
-
     background:
         linear-gradient(
             150deg,
             rgba(93, 53, 103, 0.97),
             rgba(38, 20, 51, 0.98)
         );
-
     box-shadow:
         0 15px 35px rgba(0, 0, 0, 0.32);
-
     text-align: center;
-
     transition:
         transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
         top 0.65s ease,
         opacity 0.65s ease,
         box-shadow 0.65s ease,
         border-color 0.65s ease;
-
     will-change: transform;
 }
 
