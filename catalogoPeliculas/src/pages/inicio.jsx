@@ -628,8 +628,13 @@ export default function Inicio() {
       </aside>
 
       {/* CONTENIDO PRINCIPAL */}
-      <main className="cine-principal">
-
+      <main
+  className={`cine-principal ${
+    vista !== "inicio"
+      ? "cine-principal-colecciones"
+      : ""
+  }`}
+>
         {/* FONDO DE LA PELÍCULA */}
         <div className="fondo-escena" aria-hidden="true">
           {vista === "inicio" && activa && (
@@ -971,7 +976,7 @@ export default function Inicio() {
             <div className="mini-brazo" />
 
             <div className="mini-cuerpo">
-              <span>UNA NUEVA HISTORIA</span>
+              <span>CARGANDO</span>
               <strong>ACCIÓN</strong>
             </div>
           </div>

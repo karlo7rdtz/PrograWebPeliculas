@@ -1,20 +1,21 @@
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { catalogo } from "../data/catalogo";
 import "../styles/favoritos.css";
 
 const CLAVE_RESENAS = "peliculas-resenas";
 
-function cargarResenas() {
+function leerResenas() {
   try {
-    const guardadas = JSON.parse(
+    const datos = JSON.parse(
       localStorage.getItem(CLAVE_RESENAS) || "{}"
     );
 
-    return guardadas &&
-      typeof guardadas === "object" &&
-      !Array.isArray(guardadas)
-      ? guardadas
+    return datos &&
+      typeof datos === "object" &&
+      !Array.isArray(datos)
+      ? datos
       : {};
   } catch {
     return {};
@@ -22,14 +23,61 @@ function cargarResenas() {
 }
 
 function normalizar(texto) {
-  return String(texto)
+  return String(texto ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 }
 
+// Distancia circular para los carruseles.
+function distancia(indice, activo, total) {
+  let diferencia = indice - activo;
+
+  if (diferencia > total / 2) {
+    diferencia -= total;
+  }
+
+  if (diferencia < -total / 2) {
+    diferencia += total;
+  }
+
+  return diferencia;
+}
+
+// COMPONENTE PARA CALIFICAR
+function Nota({
+  pelicula,
+  calificaciones,
+  alCalificar,
+}) {
+  return (
+    <label className="rc-nota">
+      <span>Mi calificación</span>
+
+      <select
+        aria-label={`Calificación de ${pelicula.titulo}`}
+        value={calificaciones[pelicula.id] ?? ""}
+        onChange={(e) =>
+          alCalificar(pelicula.id, e.target.value)
+        }
+      >
+        <option value="">Sin calificar</option>
+
+        {Array.from(
+          { length: 10 },
+          (_, i) => i + 1
+        ).map((n) => (
+          <option key={n} value={n}>
+            {n}/10
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 export default function Favoritos({
-  vista,
+  vista = "favoritos",
   favoritos = [],
   miLista = [],
   calificaciones = {},
@@ -39,17 +87,29 @@ export default function Favoritos({
   alCalificar,
   alVerDetalles,
 }) {
+  // ESTADOS
+  const [resenas, setResenas] = useState(leerResenas);
   const [busqueda, setBusqueda] = useState("");
   const [tipo, setTipo] = useState("Todos");
-  const [resenas, setResenas] = useState(cargarResenas);
-  const [editando, setEditando] = useState(null);
+
+  const [seleccion, setSeleccion] = useState({
+    favoritos: null,
+    lista: null,
+    calificadas: null,
+  });
+
+  const [editorId, setEditorId] = useState(null);
   const [borrador, setBorrador] = useState("");
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  const carruselRef = useRef(null);
+  const [nuevaResenaId, setNuevaResenaId] = useState(
+    catalogo[0]?.id ?? ""
+  );
 
-  // Guardar reseñas.
+  const entradaRef = useRef(null);
+
+  // GUARDAR RESEÑAS
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -57,386 +117,212 @@ export default function Favoritos({
         JSON.stringify(resenas)
       );
     } catch {
-      // Funciona durante la sesión si falla localStorage.
+      // Los cambios permanecen durante la sesión.
     }
   }, [resenas]);
 
-  // Limpiar filtros al cambiar de sección.
+  // REINICIAR FILTROS
   useEffect(() => {
     setBusqueda("");
     setTipo("Todos");
-    setEditando(null);
-    setError("");
     setMensaje("");
   }, [vista]);
 
-  const tieneResenaONota = (pelicula) =>
-    Boolean(resenas[pelicula.id]?.texto) ||
-    calificaciones[pelicula.id] !== undefined;
+  // CERRAR EDITOR CON ESCAPE
+  useEffect(() => {
+    if (!editorId) return;
 
-  const totalResenas = catalogo.filter(
-    tieneResenaONota
-  ).length;
+    const tecla = (e) => {
+      if (e.key === "Escape") {
+        setEditorId(null);
+      }
+    };
 
-  // Seleccionar películas según la sección.
-  const peliculasVisibles = catalogo.filter((pelicula) => {
-    const pertenece =
-      vista === "favoritos"
-        ? favoritos.includes(pelicula.id)
-        : vista === "lista"
-          ? miLista.includes(pelicula.id)
-          : tieneResenaONota(pelicula);
+    const previo = document.activeElement;
 
-    const coincideTipo =
-      tipo === "Todos" || pelicula.tipo === tipo;
+    const frame = requestAnimationFrame(() => {
+      entradaRef.current?.focus();
+    });
 
-    const coincideBusqueda = normalizar(
-      pelicula.titulo
-    ).includes(normalizar(busqueda.trim()));
+    document.addEventListener("keydown", tecla);
 
-    return pertenece && coincideTipo && coincideBusqueda;
+    return () => {
+      cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", tecla);
+      previo?.focus?.();
+    };
+  }, [editorId]);
+
+  // PELÍCULAS CALIFICADAS O RESEÑADAS
+  const tieneOpinion = (p) =>
+    Boolean(resenas[p.id]?.texto) ||
+    calificaciones[p.id] !== undefined;
+
+  // CONTENIDO DE CADA PANTALLA
+  const base = catalogo.filter((p) => {
+    if (vista === "favoritos") {
+      return favoritos.includes(p.id);
+    }
+
+    if (vista === "lista") {
+      return miLista.includes(p.id);
+    }
+
+    return tieneOpinion(p);
   });
 
-  // Mostrar las últimas tres reseñas escritas.
-  const resenasRecientes = catalogo
-    .filter((pelicula) =>
-      Boolean(resenas[pelicula.id]?.texto)
-    )
-    .sort(
-      (a, b) =>
-        (resenas[b.id]?.fechaOrden ?? 0) -
-        (resenas[a.id]?.fechaOrden ?? 0)
-    )
-    .slice(0, 3);
+  // BÚSQUEDA Y FILTROS
+  const visibles = base.filter(
+    (p) =>
+      (tipo === "Todos" || p.tipo === tipo) &&
+      normalizar(p.titulo).includes(
+        normalizar(busqueda.trim())
+      )
+  );
 
-  const titulo =
-    vista === "favoritos"
-      ? "Mis Favoritos"
-      : vista === "lista"
-        ? "Mi Lista"
-        : "Mis Reseñas";
+  // PELÍCULA ACTIVA EN EL CARRUSEL
+  const activo =
+    visibles.find(
+      (p) => p.id === seleccion[vista]
+    ) ?? visibles[0];
 
-  const descripcion =
-    vista === "favoritos"
-      ? "Las historias que merecen un lugar especial."
-      : vista === "lista"
-        ? "Películas y series que quieres tener a la mano."
-        : "Tus opiniones y calificaciones, reunidas en un solo lugar.";
+  const indiceActivo = activo
+    ? visibles.findIndex((p) => p.id === activo.id)
+    : 0;
 
-  // Preparar formulario de reseña.
+  // CAMBIAR PELÍCULA SELECCIONADA
+  function elegir(p, seccion = vista) {
+    setSeleccion((prev) => ({
+      ...prev,
+      [seccion]: p.id,
+    }));
+  }
+
+  // MOVER CARRUSEL
+  function mover(direccion) {
+    if (!visibles.length) return;
+
+    const siguiente =
+      (indiceActivo + direccion + visibles.length) %
+      visibles.length;
+
+    elegir(visibles[siguiente]);
+  }
+
+  // ABRIR EDITOR
   function abrirEditor(pelicula) {
-    setEditando(pelicula.id);
-    setBorrador(resenas[pelicula.id]?.texto ?? "");
+    setEditorId(pelicula.id);
+
+    setBorrador(
+      resenas[pelicula.id]?.texto ?? ""
+    );
+
     setError("");
     setMensaje("");
   }
 
-  // Guardar una reseña.
-  function guardarResena(pelicula) {
+  // GUARDAR RESEÑA
+  function guardarResena() {
     const texto = borrador.trim();
 
+    if (!editorId) return;
+
     if (texto.length < 10) {
-      setError(
-        "Escribe por lo menos 10 caracteres para guardar tu reseña."
-      );
+      setError("Escribe al menos 10 caracteres.");
       return;
     }
 
-    setResenas((actuales) => ({
-      ...actuales,
-      [pelicula.id]: {
+    setResenas((prev) => ({
+      ...prev,
+
+      [editorId]: {
         texto,
         fecha: new Date().toLocaleDateString("es-MX"),
         fechaOrden: Date.now(),
       },
     }));
 
-    setEditando(null);
-    setError("");
-    setMensaje(
-      `Reseña de ${pelicula.titulo} guardada.`
-    );
+    setEditorId(null);
+    setMensaje("Reseña guardada.");
   }
 
-  // Eliminar una reseña.
+  // ELIMINAR RESEÑA
   function eliminarResena(pelicula) {
-    setResenas((actuales) => {
-      const copia = { ...actuales };
+    if (
+      !window.confirm(
+        `¿Eliminar tu reseña de ${pelicula.titulo}?`
+      )
+    ) {
+      return;
+    }
+
+    setResenas((prev) => {
+      const copia = { ...prev };
       delete copia[pelicula.id];
       return copia;
     });
 
-    setEditando(null);
-    setMensaje(
-      `Se eliminó la reseña de ${pelicula.titulo}.`
+    setMensaje("Reseña eliminada.");
+  }
+
+  // ABRIR DETALLES
+  function detalles(pelicula, evento) {
+    alVerDetalles(
+      pelicula,
+      evento.currentTarget
     );
   }
 
-  // Desplazamiento del carrusel.
-  function moverCarrusel(direccion) {
-    carruselRef.current?.scrollBy({
-      left: direccion * 265,
-      behavior: "smooth",
-    });
-  }
-
-  function cambiarSeccion(nuevaVista) {
-    alCambiarVista(nuevaVista);
-  }
-
-  // Tarjetas de películas.
-  function tarjeta(pelicula) {
-    const guardada = favoritos.includes(pelicula.id);
-    const enLista = miLista.includes(pelicula.id);
-    const resena = resenas[pelicula.id];
-    const nota = calificaciones[pelicula.id];
-
-    return (
-      <article className="fav-tarjeta" key={pelicula.id}>
-
-        <div className="fav-imagen-contenedor">
-          <img
-            src={pelicula.poster}
-            alt={pelicula.titulo}
-            loading="lazy"
-          />
-
-          <button
-            type="button"
-            className={`fav-corazon ${
-              guardada ? "marcado" : ""
-            }`}
-            aria-label={
-              guardada
-                ? `Quitar ${pelicula.titulo} de favoritos`
-                : `Agregar ${pelicula.titulo} a favoritos`
-            }
-            aria-pressed={guardada}
-            onClick={() => alFavorito(pelicula.id)}
-          >
-            {guardada ? "♥" : "♡"}
-          </button>
-
-          <div className="fav-acciones">
-            <button
-              type="button"
-              onClick={(evento) =>
-                alVerDetalles(
-                  pelicula,
-                  evento.currentTarget
-                )
-              }
-            >
-              Ver información
-            </button>
-
-            <button
-              type="button"
-              onClick={() => abrirEditor(pelicula)}
-            >
-              {resena
-                ? "Editar reseña"
-                : "Escribir reseña"}
-            </button>
-          </div>
-        </div>
-
-        <div className="fav-datos">
-          <p className="fav-meta">
-            {pelicula.anio} · {pelicula.tipo}
-          </p>
-
-          <h3>{pelicula.titulo}</h3>
-
-          <p className="fav-genero">
-            {pelicula.generos?.join(" · ")}
-          </p>
-
-          <div className="fav-fila-opciones">
-            <button
-              type="button"
-              onClick={() => alMiLista(pelicula.id)}
-              aria-pressed={enLista}
-            >
-              {enLista ? "✓ En Mi lista" : "+ Mi lista"}
-            </button>
-
-            <label>
-              <span>Nota</span>
-              <select
-                value={nota ?? ""}
-                aria-label={`Tu calificación para ${pelicula.titulo}`}
-                onChange={(evento) =>
-                  alCalificar(
-                    pelicula.id,
-                    evento.target.value
-                  )
-                }
-              >
-                <option value="">—</option>
-
-                {Array.from(
-                  { length: 10 },
-                  (_, indice) => indice + 1
-                ).map((numero) => (
-                  <option key={numero} value={numero}>
-                    {numero}/10
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          {/* RESEÑA GUARDADA */}
-          {resena?.texto && (
-            <div className="fav-resena-guardada">
-              <span>
-                Mi reseña · {resena.fecha}
-              </span>
-
-              <p>{resena.texto}</p>
-
-              <button
-                type="button"
-                onClick={() => eliminarResena(pelicula)}
-              >
-                Eliminar reseña
-              </button>
-            </div>
-          )}
-
-          {/* FORMULARIO PARA ESCRIBIR */}
-          {editando === pelicula.id && (
-            <div className="fav-editor">
-              <label htmlFor={`resena-${pelicula.id}`}>
-                Tu reseña
-              </label>
-
-              <textarea
-                id={`resena-${pelicula.id}`}
-                value={borrador}
-                onChange={(evento) => {
-                  setBorrador(evento.target.value);
-                  setError("");
-                }}
-                placeholder="¿Qué te pareció esta historia?"
-                rows={4}
-                maxLength={800}
-              />
-
-              {error && (
-                <p className="fav-error" role="alert">
-                  {error}
-                </p>
-              )}
-
-              <div className="fav-editor-acciones">
-                <button
-                  type="button"
-                  onClick={() => guardarResena(pelicula)}
-                >
-                  Guardar
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setEditando(null)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-      </article>
-    );
-  }
+  const editorPelicula = catalogo.find(
+    (p) => p.id === editorId
+  );
 
   return (
-    <section className="fav-pagina">
+    <section className={`rc-pagina rc-${vista}`}>
 
-      {/* ENCABEZADO */}
-      <header className="fav-encabezado">
+      {/* ENCABEZADO DE CADA INTERFAZ */}
+      <header className="rc-cabecera">
         <div>
-          <p className="fav-sobre">
-            ✦ TU RINCÓN DE CINE ✦
-          </p>
+          <span className="rc-indice">
+            {vista === "favoritos"
+              ? "01"
+              : vista === "lista"
+                ? "02"
+                : "03"}
+          </span>
 
           <h1>
-            {titulo} <span>♥</span>
+            {vista === "favoritos"
+              ? "Favoritos"
+              : vista === "lista"
+                ? "Mi lista"
+                : "Mis reseñas"}
           </h1>
 
-          <p>{descripcion}</p>
-        </div>
-
-        <div className="fav-contador">
-          <strong>
+          <p>
             {vista === "favoritos"
-              ? favoritos.length
+              ? "Películas y series favoritas."
               : vista === "lista"
-                ? miLista.length
-                : totalResenas}
-          </strong>
-
-          <span>
-            {vista === "calificadas"
-              ? "Opiniones y notas"
-              : "Guardadas"}
-          </span>
+                ? "Películas y series que agregaste a tu lista."
+                : "Tus calificaciones y opiniones."}
+          </p>
         </div>
+
+        <span className="rc-total">
+          {base.length}
+          <small>títulos</small>
+        </span>
       </header>
 
-      {/* NAVEGACIÓN DE COLECCIONES */}
-      <nav
-        className="fav-pestanas"
-        aria-label="Mi colección personal"
-      >
-        <button
-          type="button"
-          className={
-            vista === "favoritos" ? "seleccionada" : ""
-          }
-          onClick={() => cambiarSeccion("favoritos")}
-        >
-          ♥ Favoritos <span>{favoritos.length}</span>
-        </button>
-
-        <button
-          type="button"
-          className={
-            vista === "lista" ? "seleccionada" : ""
-          }
-          onClick={() => cambiarSeccion("lista")}
-        >
-          ☷ Mi lista <span>{miLista.length}</span>
-        </button>
-
-        <button
-          type="button"
-          className={
-            vista === "calificadas" ? "seleccionada" : ""
-          }
-          onClick={() => cambiarSeccion("calificadas")}
-        >
-          ☆ Mis reseñas <span>{totalResenas}</span>
-        </button>
-      </nav>
-
       {/* FILTROS */}
-      <div className="fav-herramientas">
-        <div
-          className="fav-filtros"
-          aria-label="Filtrar por tipo"
-        >
+      <div className="rc-herramientas">
+        <div className="rc-filtros">
           {["Todos", "Película", "Serie"].map((opcion) => (
             <button
               type="button"
               key={opcion}
-              className={
-                tipo === opcion ? "activo" : ""
-              }
               aria-pressed={tipo === opcion}
+              className={tipo === opcion ? "activo" : ""}
               onClick={() => setTipo(opcion)}
             >
               {opcion === "Todos"
@@ -450,136 +336,694 @@ export default function Favoritos({
 
         <input
           type="search"
-          placeholder="Buscar en mi colección..."
-          aria-label="Buscar en mi colección"
+          aria-label="Buscar películas"
+          placeholder="Buscar película o serie"
           value={busqueda}
-          onChange={(evento) =>
-            setBusqueda(evento.target.value)
-          }
+          onChange={(e) => setBusqueda(e.target.value)}
         />
       </div>
 
       {mensaje && (
-        <p className="fav-mensaje" role="status">
+        <p className="rc-mensaje" role="status">
           {mensaje}
         </p>
       )}
 
-      {/* TÍTULO DE SECCIÓN */}
-      <div className="fav-seccion-titulo">
-        <div>
-          <p>SELECCIÓN PERSONAL</p>
+      {/* ===================================
+          FAVORITOS: CARRUSEL 3D HORIZONTAL
+      =================================== */}
 
-          <h2>
-            {vista === "favoritos"
-              ? "Historias que me encantan"
-              : vista === "lista"
-                ? "Para volver a ver o descubrir"
-                : "Lo que pienso de cada historia"}
-          </h2>
-        </div>
+      {vista === "favoritos" && (
+        visibles.length ? (
+          <div className="rc-fav-contenido">
 
-        <span>{peliculasVisibles.length} títulos</span>
-      </div>
+            <div
+              className="rc-fav-escenario"
+              aria-label="Carrusel de favoritos"
+            >
 
-      {/* PELÍCULAS Y CARRUSEL */}
-      {peliculasVisibles.length === 0 ? (
-        <div className="fav-vacio">
-          <span>♡</span>
+              {/* FONDO DE LA PELÍCULA */}
+              <div
+                className="rc-fav-fondo"
+                aria-hidden="true"
+                style={{
+                  backgroundImage: `url("${
+                    activo.fondo || activo.poster
+                  }")`,
+                }}
+              />
 
-          <h3>Por aquí todavía no hay películas</h3>
+              {/* PÓSTERES EN PERSPECTIVA */}
+              <div className="rc-fav-pista">
+                {visibles.map((p, i) => {
+                  const d = distancia(
+                    i,
+                    indiceActivo,
+                    visibles.length
+                  );
 
-          <p>
-            {busqueda || tipo !== "Todos"
-              ? "Prueba con otros filtros o con otra búsqueda."
-              : "Vuelve al catálogo y guarda, califica o reseña una película."}
-          </p>
+                  const a = Math.abs(d);
 
-          <button
-            type="button"
-            onClick={() => alCambiarVista("inicio")}
-          >
-            Ir al catálogo
-          </button>
-        </div>
-      ) : vista === "calificadas" ? (
-        <div className="fav-resenas-lista">
-          {peliculasVisibles.map(tarjeta)}
-        </div>
-      ) : (
-        <div className="fav-carrusel-bloque">
-          <button
-            type="button"
-            className="fav-flecha"
-            aria-label="Anterior"
-            onClick={() => moverCarrusel(-1)}
-          >
-            ❮
-          </button>
+                  return (
+                    <button
+                      type="button"
+                      key={p.id}
+                      className={`rc-fav-cartel ${
+                        p.id === activo.id
+                          ? "central"
+                          : ""
+                      }`}
+                      style={{
+                        "--d": d,
+                        "--abs": a,
+                        zIndex: 10 - a,
+                        pointerEvents:
+                          a > 3 ? "none" : "auto",
+                      }}
+                      tabIndex={a > 3 ? -1 : 0}
+                      aria-label={`Seleccionar ${p.titulo}`}
+                      aria-pressed={
+                        p.id === activo.id
+                      }
+                      onClick={() => elegir(p)}
+                    >
+                      <img
+                        src={p.poster}
+                        alt=""
+                        loading="lazy"
+                      />
 
-          <div
-            className="fav-carrusel"
-            ref={carruselRef}
-          >
-            {peliculasVisibles.map(tarjeta)}
-          </div>
+                      <span>{p.titulo}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-          <button
-            type="button"
-            className="fav-flecha"
-            aria-label="Siguiente"
-            onClick={() => moverCarrusel(1)}
-          >
-            ❯
-          </button>
-        </div>
-      )}
+              {/* FLECHAS */}
+              <button
+                type="button"
+                className="rc-fav-flecha izquierda"
+                onClick={() => mover(-1)}
+                aria-label="Película anterior"
+              >
+                ‹
+              </button>
 
-      {/* APARTADO DE RESEÑAS RECIENTES */}
-      {vista !== "calificadas" && (
-        <section className="fav-ultimas">
-          <div className="fav-ultimas-cabecera">
-            <div>
-              <p>DIARIO DE CINE</p>
-              <h2>Mis reseñas</h2>
+              <button
+                type="button"
+                className="rc-fav-flecha derecha"
+                onClick={() => mover(1)}
+                aria-label="Película siguiente"
+              >
+                ›
+              </button>
+
+              <div className="rc-fav-numeracion">
+                {String(indiceActivo + 1).padStart(2, "0")}
+                {" / "}
+                {String(visibles.length).padStart(2, "0")}
+              </div>
+
             </div>
+
+            {/* DATOS DE LA PELÍCULA ACTIVA */}
+            <section
+              className="rc-fav-detalle"
+              aria-label="Película seleccionada"
+            >
+              <div>
+                <span className="rc-meta">
+                  {activo.anio} · {activo.tipo} ·{" "}
+                  {activo.generos?.join(" / ")}
+                </span>
+
+                <h2>{activo.titulo}</h2>
+
+                <p>{activo.sinopsis}</p>
+              </div>
+
+              <div className="rc-acciones">
+                <button
+                  type="button"
+                  className="rc-primario"
+                  onClick={(e) => detalles(activo, e)}
+                >
+                  Ver detalles ↗
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    alFavorito(activo.id)
+                  }
+                >
+                  ♥ Quitar favorito
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    alMiLista(activo.id)
+                  }
+                >
+                  {miLista.includes(activo.id)
+                    ? "✓ En Mi lista"
+                    : "+ Mi lista"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    abrirEditor(activo)
+                  }
+                >
+                  {resenas[activo.id]?.texto
+                    ? "Editar reseña"
+                    : "Escribir reseña"}
+                </button>
+
+                <Nota
+                  pelicula={activo}
+                  calificaciones={calificaciones}
+                  alCalificar={alCalificar}
+                />
+              </div>
+
+            </section>
+
+          </div>
+        ) : (
+          <div className="rc-vacio">
+            <h2>No hay favoritos para mostrar.</h2>
 
             <button
               type="button"
               onClick={() =>
-                cambiarSeccion("calificadas")
+                alCambiarVista("inicio")
               }
             >
-              Ver todas ↗
+              Ver catálogo
+            </button>
+          </div>
+        )
+      )}
+
+      {/* ===================================
+          MI LISTA: RUEDA VERTICAL
+      =================================== */}
+
+      {vista === "lista" && (
+        visibles.length ? (
+          <div className="rc-lista-layout">
+
+            {/* RUEDA DE PÓSTERES */}
+            <div
+              className="rc-rueda"
+              aria-label="Carrusel de Mi lista"
+            >
+              <div
+                className="rc-rueda-arco"
+                aria-hidden="true"
+              />
+
+              {visibles.map((p, i) => {
+                const d = distancia(
+                  i,
+                  indiceActivo,
+                  visibles.length
+                );
+
+                const a = Math.abs(d);
+
+                return (
+                  <button
+                    type="button"
+                    key={p.id}
+                    className={`rc-rueda-cartel ${
+                      p.id === activo.id
+                        ? "central"
+                        : ""
+                    }`}
+                    style={{
+                      "--d": d,
+                      "--abs": a,
+                      zIndex: 10 - a,
+                      pointerEvents:
+                        a > 3 ? "none" : "auto",
+                    }}
+                    tabIndex={a > 3 ? -1 : 0}
+                    aria-label={`Seleccionar ${p.titulo}`}
+                    aria-pressed={
+                      p.id === activo.id
+                    }
+                    onClick={() => elegir(p)}
+                  >
+                    <img
+                      src={p.poster}
+                      alt=""
+                      loading="lazy"
+                    />
+                  </button>
+                );
+              })}
+
+              {/* CONTROLES VERTICALES */}
+              <div className="rc-rueda-controles">
+                <button
+                  type="button"
+                  onClick={() => mover(-1)}
+                  aria-label="Película anterior"
+                >
+                  ↑
+                </button>
+
+                <span>
+                  {indiceActivo + 1} / {visibles.length}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => mover(1)}
+                  aria-label="Película siguiente"
+                >
+                  ↓
+                </button>
+              </div>
+            </div>
+
+            {/* INFORMACIÓN A LA DERECHA */}
+            <section className="rc-lista-detalle">
+              <div
+                className="rc-lista-fondo"
+                aria-hidden="true"
+                style={{
+                  backgroundImage: `url("${
+                    activo.fondo || activo.poster
+                  }")`,
+                }}
+              />
+
+              <div className="rc-lista-informacion">
+                <span className="rc-meta">
+                  {activo.anio} · {activo.tipo} ·{" "}
+                  {activo.generos?.join(" / ")}
+                </span>
+
+                <h2>{activo.titulo}</h2>
+
+                <p>{activo.sinopsis}</p>
+
+                <div className="rc-acciones">
+                  <button
+                    type="button"
+                    className="rc-primario"
+                    onClick={(e) =>
+                      detalles(activo, e)
+                    }
+                  >
+                    Ver detalles ↗
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      alMiLista(activo.id)
+                    }
+                  >
+                    Quitar de Mi lista
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      alFavorito(activo.id)
+                    }
+                  >
+                    {favoritos.includes(activo.id)
+                      ? "♥ En favoritos"
+                      : "♡ Favorito"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      abrirEditor(activo)
+                    }
+                  >
+                    Escribir reseña
+                  </button>
+
+                  <Nota
+                    pelicula={activo}
+                    calificaciones={calificaciones}
+                    alCalificar={alCalificar}
+                  />
+                </div>
+              </div>
+            </section>
+
+          </div>
+        ) : (
+          <div className="rc-vacio">
+            <h2>No hay películas en Mi lista.</h2>
+
+            <button
+              type="button"
+              onClick={() =>
+                alCambiarVista("inicio")
+              }
+            >
+              Ver catálogo
+            </button>
+          </div>
+        )
+      )}
+
+      {/* ===================================
+          MIS RESEÑAS: PANELES 3D
+      =================================== */}
+
+      {vista === "calificadas" && (
+        <div className="rc-resenas">
+
+          {/* SELECCIONAR PELÍCULA PARA RESEÑAR */}
+          <div className="rc-resenas-nueva">
+            <label htmlFor="rc-elegir">
+              Película o serie
+            </label>
+
+            <select
+              id="rc-elegir"
+              value={nuevaResenaId}
+              onChange={(e) =>
+                setNuevaResenaId(e.target.value)
+              }
+            >
+              {catalogo.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.titulo}
+                </option>
+              ))}
+            </select>
+
+            <button
+              type="button"
+              className="rc-primario"
+              disabled={!nuevaResenaId}
+              onClick={() => {
+                const pelicula = catalogo.find(
+                  (p) => p.id === nuevaResenaId
+                );
+
+                if (pelicula) {
+                  abrirEditor(pelicula);
+                }
+              }}
+            >
+              + Nueva reseña
             </button>
           </div>
 
-          {resenasRecientes.length === 0 ? (
-            <p className="fav-sin-resenas">
-              Todavía no escribes una reseña.
-              Selecciona "Escribir reseña" en una
-              tarjeta para comenzar.
-            </p>
-          ) : (
-            <div className="fav-ultimas-grid">
-              {resenasRecientes.map((pelicula) => (
-                <article key={pelicula.id}>
-                  <strong>{pelicula.titulo}</strong>
+          {visibles.length ? (
+            <>
+
+              {/* CARRUSEL DE RESEÑAS */}
+              <div
+                className="rc-resenas-escenario"
+                aria-label="Carrusel de reseñas"
+              >
+                <div className="rc-resenas-paneles">
+                  {visibles.map((p, i) => {
+                    const d = distancia(
+                      i,
+                      indiceActivo,
+                      visibles.length
+                    );
+
+                    const a = Math.abs(d);
+
+                    return (
+                      <button
+                        type="button"
+                        key={p.id}
+                        className={`rc-resena-panel ${
+                          p.id === activo.id
+                            ? "central"
+                            : ""
+                        }`}
+                        style={{
+                          "--d": d,
+                          "--abs": a,
+                          zIndex: 10 - a,
+                          pointerEvents:
+                            a > 2 ? "none" : "auto",
+                        }}
+                        tabIndex={a > 2 ? -1 : 0}
+                        aria-label={`Seleccionar reseña de ${p.titulo}`}
+                        aria-pressed={
+                          p.id === activo.id
+                        }
+                        onClick={() => elegir(p)}
+                      >
+                        <img
+                          src={p.poster}
+                          alt=""
+                          loading="lazy"
+                        />
+
+                        <span className="rc-panel-texto">
+                          <small>
+                            {p.anio} · {p.tipo}
+                          </small>
+
+                          <strong>{p.titulo}</strong>
+
+                          <em>
+                            {resenas[p.id]?.texto ||
+                              "Sin reseña escrita"}
+                          </em>
+
+                          <span className="rc-panel-nota">
+                            {calificaciones[p.id] ?? "—"}
+                            <small>/10</small>
+                          </span>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="rc-resenas-navegacion">
+                  <button
+                    type="button"
+                    onClick={() => mover(-1)}
+                    aria-label="Reseña anterior"
+                  >
+                    ←
+                  </button>
 
                   <span>
-                    {calificaciones[pelicula.id]
-                      ? `${calificaciones[pelicula.id]}/10`
-                      : "Sin nota"}
+                    {String(indiceActivo + 1).padStart(2, "0")}
+                    {" / "}
+                    {String(visibles.length).padStart(2, "0")}
                   </span>
 
+                  <button
+                    type="button"
+                    onClick={() => mover(1)}
+                    aria-label="Reseña siguiente"
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+
+              {/* TEXTO COMPLETO DE LA RESEÑA */}
+              <section
+                className="rc-resena-detalle"
+                aria-label="Reseña seleccionada"
+              >
+                <div>
+                  <span className="rc-meta">
+                    {activo.titulo} ·{" "}
+                    {resenas[activo.id]?.fecha || "Sin fecha"}
+                  </span>
+
+                  <h2>
+                    {resenas[activo.id]?.texto
+                      ? "Mi reseña"
+                      : "Mi calificación"}
+                  </h2>
+
                   <p>
-                    {resenas[pelicula.id].texto}
+                    {resenas[activo.id]?.texto ||
+                      "Todavía no escribes una reseña para esta película."}
                   </p>
-                </article>
-              ))}
+                </div>
+
+                <div className="rc-acciones">
+                  <button
+                    type="button"
+                    className="rc-primario"
+                    onClick={() =>
+                      abrirEditor(activo)
+                    }
+                  >
+                    {resenas[activo.id]?.texto
+                      ? "Editar reseña"
+                      : "Escribir reseña"}
+                  </button>
+
+                  {resenas[activo.id]?.texto && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        eliminarResena(activo)
+                      }
+                    >
+                      Eliminar reseña
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={(e) =>
+                      detalles(activo, e)
+                    }
+                  >
+                    Ver detalles ↗
+                  </button>
+
+                  <Nota
+                    pelicula={activo}
+                    calificaciones={calificaciones}
+                    alCalificar={alCalificar}
+                  />
+                </div>
+              </section>
+
+            </>
+          ) : (
+            <div className="rc-vacio">
+              <h2>
+                No hay reseñas o calificaciones para mostrar.
+              </h2>
+
+              <p>
+                Selecciona una película arriba para escribir
+                una reseña.
+              </p>
             </div>
           )}
-        </section>
+
+        </div>
+      )}
+
+      {/* ===================================
+          EDITOR DE RESEÑAS
+      =================================== */}
+
+      {editorPelicula && createPortal(
+        <div
+          className="rc-modal-fondo"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              setEditorId(null);
+            }
+          }}
+        >
+          <section
+            className="rc-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="rc-editor-titulo"
+          >
+            <button
+              type="button"
+              className="rc-cerrar"
+              onClick={() => setEditorId(null)}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+
+            <h2 id="rc-editor-titulo">
+              {resenas[editorId]?.texto
+                ? "Editar reseña"
+                : "Nueva reseña"}
+            </h2>
+
+            <div className="rc-modal-pelicula">
+              <img
+                src={editorPelicula.poster}
+                alt=""
+              />
+
+              <div>
+                <strong>
+                  {editorPelicula.titulo}
+                </strong>
+
+                <span>
+                  {editorPelicula.anio} ·{" "}
+                  {editorPelicula.tipo}
+                </span>
+              </div>
+            </div>
+
+            <Nota
+              pelicula={editorPelicula}
+              calificaciones={calificaciones}
+              alCalificar={alCalificar}
+            />
+
+            <label htmlFor="rc-texto">
+              Tu opinión
+            </label>
+
+            <textarea
+              id="rc-texto"
+              ref={entradaRef}
+              rows={6}
+              maxLength={1000}
+              placeholder="Escribe tu opinión sobre esta película o serie."
+              value={borrador}
+              onChange={(e) => {
+                setBorrador(e.target.value);
+                setError("");
+              }}
+            />
+
+            <div className="rc-modal-meta">
+              <span role="alert">
+                {error}
+              </span>
+
+              <span>
+                {borrador.length}/1000
+              </span>
+            </div>
+
+            <div className="rc-modal-acciones">
+              <button
+                type="button"
+                onClick={() => setEditorId(null)}
+              >
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                className="rc-primario"
+                onClick={guardarResena}
+              >
+                Guardar reseña
+              </button>
+            </div>
+
+          </section>
+        </div>,
+        document.body
       )}
 
     </section>
