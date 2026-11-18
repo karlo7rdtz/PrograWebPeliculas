@@ -18,8 +18,9 @@
 
             <h1>EXPLORAR</h1>
 
-            <a href="perfil.html" class="perfil-usuario">
+            <a href="perfil.html" class="perfil-usuario" aria-label="Abrir mi perfil">
                 <img
+                    id="foto-usuario-buscador"
                     src="/imagenes/perfiles/FotoPerfil.jpeg"
                     alt="Foto de perfil"
                 >
@@ -27,7 +28,7 @@
 
         </header>
 
-        <section class="seccion-busqueda">
+        <section class="seccion-busqueda" aria-label="Buscar películas y series">
 
             <form
                 class="barra-busqueda"
@@ -36,7 +37,11 @@
                 method="get"
             >
 
-                <button type="submit" class="boton-buscar">
+                <button
+                    type="submit"
+                    class="boton-buscar"
+                    aria-label="Buscar"
+                >
                     &#128269;
                 </button>
 
@@ -45,114 +50,180 @@
                     name="busqueda"
                     placeholder="¿Qué quieres ver hoy?"
                     aria-label="Buscar películas"
+                    required
                 >
 
             </form>
 
         </section>
 
-        <section class="seccion-generos">
+        <section class="seccion-generos" aria-labelledby="titulo-generos">
 
-            <h2>Explora por género</h2>
-            <div class="linea"></div>
+            <div class="titulo-seccion">
+                <span class="indice-seccion">01</span>
+                <h2 id="titulo-generos">Explora por género</h2>
+            </div>
+
             <div id="carrusel-generos"></div>
 
         </section>
 
-        <section class="seccion-recomendaciones">
+        <section class="seccion-recomendaciones" aria-labelledby="titulo-recomendaciones">
 
-            <h2>Recomendaciones para ti</h2>
-            <div class="linea"></div>
+            <div class="titulo-seccion">
+                <span class="indice-seccion">02</span>
+                <h2 id="titulo-recomendaciones">Recomendaciones para ti</h2>
+            </div>
 
-            <div class="contenedor-recomendaciones">
+            <div class="escenario-recomendaciones">
 
-                <!-- 1. ACTIVIDAD PARANORMAL -->
-                <a href="/?pelicula=actividad-paranormal" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterActividadPar.jpg"
-                        alt="Actividad Paranormal"
-                    >
-                </a>
+                <button
+                    type="button"
+                    class="flecha-pelicula anterior-pelicula"
+                    aria-label="Película anterior"
+                >
+                    ❮
+                </button>
 
-                <!-- 2. AVATAR -->
-                <a href="/?pelicula=avatar-pelicula" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterAvatar.jpg"
-                        alt="Avatar"
-                    >
-                </a>
+                <div
+                    class="contenedor-recomendaciones"
+                    id="carrusel-recomendaciones"
+                >
 
-                <!-- 3. CARS -->
-                <a href="/?pelicula=cars" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterCars.jpg"
-                        alt="Cars"
-                    >
-                </a>
+                    <a href="/?pelicula=actividad-paranormal" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterActividadPar.jpg"
+                            alt="Actividad Paranormal"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Actividad Paranormal</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 4. F1 -->
-                <a href="/?pelicula=f1" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterF1.jpeg"
-                        alt="F1"
-                    >
-                </a>
+                    <a href="/?pelicula=avatar-pelicula" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterAvatar.jpg"
+                            alt="Avatar"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Avatar</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 5. INACTIVIDAD PARANORMAL -->
-                <a href="/?pelicula=inactividad-paranormal" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterInactividadPar.jpg"
-                        alt="Inactividad Paranormal"
-                    >
-                </a>
+                    <a href="/?pelicula=cars" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterCars.jpg"
+                            alt="Cars"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Cars</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 6. INVINCIBLE -->
-                <a href="/?pelicula=invincible" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterInvincible.jpg"
-                        alt="Invincible"
-                    >
-                </a>
+                    <a href="/?pelicula=f1" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterF1.jpeg"
+                            alt="F1"
+                        >
+                        <span class="pelicula-info">
+                            <strong>F1</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 7. OBSESSION -->
-                <a href="/?pelicula=obsession" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterObsession.webp"
-                        alt="Obsession"
-                    >
-                </a>
+                    <a href="/?pelicula=inactividad-paranormal" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterInactividadPar.jpg"
+                            alt="Inactividad Paranormal"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Inactividad Paranormal</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 8. PADDINGTON -->
-                <a href="/?pelicula=paddington" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterPaddington.jpeg"
-                        alt="Paddington"
-                    >
-                </a>
+                    <a href="/?pelicula=invincible" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterInvincible.jpg"
+                            alt="Invincible"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Invincible</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 9. REC -->
-                <a href="/?pelicula=rec" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterRec.jpeg"
-                        alt="REC"
-                    >
-                </a>
+                    <a href="/?pelicula=obsession" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterObsession.webp"
+                            alt="Obsession"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Obsession</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 10. SHREK 2 -->
-                <a href="/?pelicula=shrek2" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterShrek2.webp"
-                        alt="Shrek 2"
-                    >
-                </a>
+                    <a href="/?pelicula=paddington" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterPaddington.jpeg"
+                            alt="Paddington"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Paddington</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
 
-                <!-- 11. SOUTH PARK -->
-                <a href="/?pelicula=south-park" class="pelicula">
-                    <img
-                        src="/imagenes/posters/PosterSouthPark.jpg"
-                        alt="South Park"
-                    >
-                </a>
+                    <a href="/?pelicula=rec" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterRec.jpeg"
+                            alt="REC"
+                        >
+                        <span class="pelicula-info">
+                            <strong>REC</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
+
+                    <a href="/?pelicula=shrek2" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterShrek2.webp"
+                            alt="Shrek 2"
+                        >
+                        <span class="pelicula-info">
+                            <strong>Shrek 2</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
+
+                    <a href="/?pelicula=south-park" class="pelicula">
+                        <img
+                            src="/imagenes/posters/PosterSouthPark.jpg"
+                            alt="South Park"
+                        >
+                        <span class="pelicula-info">
+                            <strong>South Park</strong>
+                            <span class="ver-detalles">VER DETALLES ↗</span>
+                        </span>
+                    </a>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="flecha-pelicula siguiente-pelicula"
+                    aria-label="Película siguiente"
+                >
+                    ❯
+                </button>
+
+                <div class="contador-recomendaciones" aria-live="polite">
+                    <span id="numero-recomendacion">01</span> / 11
+                </div>
 
             </div>
 
@@ -171,6 +242,23 @@
     </script>
 
     <script src="../components/carrusel.js"></script>
+    <script src="../components/recomendaciones.js"></script>
+
+    <script>
+        try {
+            const datos = JSON.parse(
+                localStorage.getItem("perfilUsuario") || "{}"
+            );
+
+            if (datos.foto) {
+                document.getElementById("foto-usuario-buscador").src = datos.foto;
+            }
+
+        } catch (error) {
+            console.warn("No se pudo leer la foto guardada.");
+        }
+    </script>
 
 </body>
+
 </html>

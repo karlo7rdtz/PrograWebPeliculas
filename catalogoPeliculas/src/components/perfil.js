@@ -18,21 +18,18 @@ const accesosActividad = [
         nombre: "FAVORITOS",
         descripcion: "Tus historias preferidas",
         enlace: "/?vista=favoritos",
-        numero: "01"
     },
     {
         campo: "imagenLista",
         nombre: "MI LISTA",
         descripcion: "Historias que quieres descubrir",
         enlace: "/?vista=lista",
-        numero: "02"
     },
     {
         campo: "imagenResenas",
         nombre: "RESEÑAS",
         descripcion: "Tus películas calificadas",
         enlace: "/?vista=calificadas",
-        numero: "03"
     }
 ];
 
@@ -492,20 +489,15 @@ function Perfil() {
                                     ? undefined
                                     : () => seleccionarTarjeta(indice),
 
-                                onKeyDown: activa
-                                    ? undefined
-                                    : evento => {
-                                        if (
-                                            evento.key === "Enter" ||
-                                            evento.key === " "
-                                        ) {
-                                            evento.preventDefault();
-                                            seleccionarTarjeta(indice);
-                                        }
-                                    },
+                            onKeyDown: evento => {
+                                if (evento.key === "Enter" || evento.key === " ") {
+                                    evento.preventDefault();
+                                    window.location.href = acceso.enlace;
+                                }
+                            },
 
-                                role: activa ? undefined : "button",
-                                tabIndex: activa ? undefined : 0,
+                            role: "link",
+                            tabIndex: 0,
 
                                 "aria-label": activa
                                     ? undefined
@@ -541,9 +533,12 @@ function Perfil() {
                                     "a",
                                     {
                                         href: acceso.enlace,
-                                        className: "boton-explorar"
+                                        className: "boton-explorar",
+                                        onClick: (evento) => {
+                                        evento.stopPropagation();
+                                        }
                                     },
-                                    "EXPLORAR ↗"
+                                    "EXPLORAR"
                                 )
                                 : e(
                                     "span",
@@ -579,8 +574,9 @@ function Perfil() {
                                 "aria-pressed":
                                     indice === indiceActivo,
 
-                                onClick: () =>
-                                    seleccionarTarjeta(indice)
+                            onClick: () => {
+                                window.location.href = acceso.enlace;
+                            },
                             }
                         )
                     )

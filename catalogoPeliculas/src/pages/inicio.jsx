@@ -184,10 +184,18 @@ export default function Inicio() {
   const [genero, setGenero] = useState(parametros.get("genero") || "Todos");
   const [tipo, setTipo] = useState("Todos");
   const [busqueda, setBusqueda] = useState(parametros.get("busqueda") || "");
-  const [vista, setVista] = useState("inicio");
+  const [vista, setVista] = useState(() => {
+    const parametros = new URLSearchParams(window.location.search);
+    const vistaSolicitada = parametros.get("vista");
+
+    if (["favoritos", "lista", "calificadas"].includes(vistaSolicitada)) {
+        return vistaSolicitada;
+    }
+
+    return "inicio";
+});
   const [seleccionado, setSeleccionado] = useState("shrek2");
 
-  // COLECCIONES PERSONALES
   const [favoritos, setFavoritos] = useState(() =>
     leerListaGuardada("peliculas-favoritas")
   );
